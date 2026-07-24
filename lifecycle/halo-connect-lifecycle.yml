@@ -1,0 +1,35 @@
+generated: '2026-07-24'
+method: searched
+source: https://haloconnect.io/sla, https://docs.haloconnect.io/release-notes/
+versioning:
+  scheme: calendar
+  format: 'YY.MMDD'
+  docs: https://docs.haloconnect.io/release-notes/
+deprecation:
+  policy_url: https://haloconnect.io/sla
+  breaking_change_notice_days: 90
+  non_breaking_change_notice_days: 10
+  backwards_compatibility: maintained during the transition window for breaking changes
+  emergency_changes: may deploy without notice for security or stability
+  announcement_channels:
+    - email
+    - staging documentation
+    - production release notes
+  notes: >-
+    Non-breaking changes with no customer impact may deploy without notice;
+    otherwise 10 days advance notice. Breaking changes get 90 days advance
+    notice with backwards compatibility during the transition.
+sla:
+  url: https://haloconnect.io/sla
+  halo_cloud_uptime_target: '99.9%'
+  halo_link_uptime_observed: '>99.5% (depends on practice IT environment; no guaranteed threshold)'
+  support_initial_response: 4 business hours
+  support_resolution_target: 24 business hours
+  service_credit_max: 25% of monthly usage fees (account credit only)
+  credit_claim_window_days: 30
+  exclusions:
+    - scheduled and emergency maintenance
+    - outages under 5 minutes
+status_page: https://status.haloconnect.io/
+deprecated_operations:
+  - openapi/halo-connect-integrator-openapi.json#pairSite

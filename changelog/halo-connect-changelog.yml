@@ -1,0 +1,65 @@
+generated: '2026-07-24'
+method: searched
+source: https://docs.haloconnect.io/release-notes/
+docs: https://docs.haloconnect.io/release-notes/2026/
+versioning:
+  scheme: calendar
+  format: 'YY.MMDD (release date), with component-specific build numbers for Halo Link and Halo Cloud'
+  example: '26.0713 = 13 July 2026'
+components:
+  - Halo Link
+  - Halo Cloud
+entries:
+  - version: '26.0713'
+    date: '2026-07-13'
+    breaking: false
+    highlights:
+      - Halo Link 26.713.10445, Halo Cloud 26.626.10267
+      - Fixed a regression that prevented backwards compatibility with versions of Best Practice prior to Oxford SP1
+      - Internal improvements for release rings and traffic handling
+  - version: '26.0710'
+    date: '2026-07-10'
+    breaking: false
+    highlights:
+      - Halo Link 26.709.10396
+      - Internal improvements to support new security updates in Best Practice Oxford SP1
+  - version: '26.0608'
+    date: '2026-06-08'
+    breaking: false
+    highlights:
+      - Halo Link 26.608.10037, Halo Cloud 26.603.10003
+      - Internal improvements
+  - version: '26.0525'
+    date: '2026-05-25'
+    breaking: false
+    additions:
+      - '$waitlist operation for the FHIR API for Bp Premier'
+    highlights:
+      - Halo Link 26.525.9901, Halo Cloud 26.525.9903
+  - version: '26.0518'
+    date: '2026-05-18'
+    breaking: false
+    highlights:
+      - Halo Link 2026.414.9810
+      - Fixed async queries that could get stuck while executing
+  - version: '26.0430'
+    date: '2026-04-30'
+    breaking: false
+    additions:
+      - Patient update functionality for the FHIR API for Bp Premier
+    highlights:
+      - Halo Link 2026.430.9530
+      - Performance improvements to query execution and upload
+  - version: '26.0416'
+    date: '2026-04-16'
+    breaking: false
+    highlights:
+      - Halo Link 26.416.9328
+      - Fixed an issue that prevented Halo Link from starting if the hardware survey timed out
+  - version: '26.0407'
+    date: '2026-04-07'
+    breaking: false
+    highlights:
+      - Halo Link 26.407.9115, Halo Cloud 26.407.9123
+      - Improved site lookup performance and error handling
+      - Bug fixes for $find-free operation and query page timeouts

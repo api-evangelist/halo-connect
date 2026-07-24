@@ -1,0 +1,39 @@
+generated: '2026-07-24'
+method: searched
+source: openapi/halo-connect-desktop-openapi.json, openapi/halo-connect-integrator-openapi.json
+docs: https://docs.haloconnect.io/halo-cloud/getting-started/
+notes: >-
+  Integrator API authenticates with an Azure API Management subscription key
+  (Ocp-Apim-Subscription-Key header). Desktop API additionally requires a bearer
+  JWT (obtained from POST /integrator/token using integrator auth) plus a DeviceId
+  header. There is no OAuth 2.0 / OIDC flow and no self-serve public sign-up; keys
+  are issued per approved integrator and are environment-scoped (stage vs production).
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: SubscriptionKey
+  type: apiKey
+  in: header
+  parameter: Ocp-Apim-Subscription-Key
+  description: The subscription key for the API.
+  sources:
+  - openapi/halo-connect-desktop-openapi.json
+  - openapi/halo-connect-integrator-openapi.json
+- name: AuthorizationHeader
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Bearer token for authentication.
+  sources:
+  - openapi/halo-connect-desktop-openapi.json
+- name: DeviceIdHeader
+  type: apiKey
+  in: header
+  parameter: DeviceId
+  description: Device ID of the device making the request.
+  sources:
+  - openapi/halo-connect-desktop-openapi.json

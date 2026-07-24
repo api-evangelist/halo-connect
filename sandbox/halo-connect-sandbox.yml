@@ -1,0 +1,25 @@
+generated: '2026-07-24'
+method: searched
+source: https://docs.haloconnect.io/halo-cloud/getting-started/
+note: >-
+  Halo Connect separates a Stage environment from Production. There are no
+  published test cards/tokens (not a payments API); test isolation is by
+  environment host + environment-scoped subscription keys, against test practice
+  sites provisioned by Halo. Values below are published verbatim; none invented.
+environments:
+  - mode: production
+    host: https://api.haloconnect.io
+    portal: https://manage.haloconnect.io
+    description: Connects to live practice databases.
+  - mode: staging
+    host: https://api.stage.haloconnect.io
+    description: For development and testing.
+key_separation:
+  rule: Production subscription keys cannot be used with staging instances, and vice versa.
+  scheme: Azure API Management subscription keys, environment-scoped.
+test_sites:
+  mechanism: >-
+    Testing is performed against test practice sites (Halo GUIDs) provisioned by
+    Halo Connect for the integrator; there are no public magic identifiers.
+onboarding:
+  contact: https://docs.haloconnect.io/support/contact-us/

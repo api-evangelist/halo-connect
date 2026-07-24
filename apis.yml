@@ -2,18 +2,16 @@ aid: halo-connect
 url: https://raw.githubusercontent.com/api-evangelist/halo-connect/refs/heads/main/apis.yml
 name: Halo Connect
 kind: company
-description: Halo Connect is an Australian healthcare interoperability platform, founded
-  in 2021 and headquartered in Brisbane, Queensland, that makes primary-care data
-  integration simple by exposing on-premise practice management system (PMS) databases
-  through a modern cloud API. Its Halo Link agent and Halo Cloud service let approved
-  software integrators query systems such as Best Practice, Zedmed, and Dental4Windows
-  using either SQL passthrough or a standards-based FHIR R4 (4.0.1) API built toward
-  the AU Base 4.1.0 implementation guide, without maintaining a separate database agent
-  per integration. Halo Connect built the first FHIR API for the Best Practice Premier
-  medical-practice industry. The platform runs on Microsoft Azure hosted in Australia,
-  and access is gated behind a Halo Cloud subscription using Azure API Management
-  subscription keys and, for desktop applications, bearer JWT tokens issued from a
-  token endpoint; there is no self-serve public API.
+description: Halo Connect is an Australian healthcare interoperability platform, founded in 2021 and headquartered
+  in Brisbane, Queensland, that makes primary-care data integration simple by exposing on-premise practice
+  management system (PMS) databases through a modern cloud API. Its Halo Link agent and Halo Cloud service
+  let approved software integrators query systems such as Best Practice, Zedmed, and Dental4Windows using
+  either SQL passthrough or a standards-based FHIR R4 (4.0.1) API built toward the AU Base 4.1.0 implementation
+  guide, without maintaining a separate database agent per integration. Halo Connect built the first FHIR
+  API for the Best Practice Premier medical-practice industry. The platform runs on Microsoft Azure hosted
+  in Australia, and access is gated behind a Halo Cloud subscription using Azure API Management subscription
+  keys and, for desktop applications, bearer JWT tokens issued from a token endpoint; there is no self-serve
+  public API.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Healthcare
@@ -32,10 +30,10 @@ specificationVersion: '0.19'
 apis:
 - aid: halo-connect:halo-cloud-integrator-api
   name: Halo Cloud API for Integrators
-  description: The Halo Cloud API for third-party software integrators to query on-premise
-    practice management system databases over the cloud, covering site pairing, SQL
-    passthrough (immediate and async queries), FHIR R4 resource search, and registered
-    (recurring) queries. Authenticated with an Azure API Management subscription key.
+  description: The Halo Cloud API for third-party software integrators to query on-premise practice management
+    system databases over the cloud, covering site pairing, SQL passthrough (immediate and async queries),
+    FHIR R4 resource search, and registered (recurring) queries. Authenticated with an Azure API Management
+    subscription key.
   humanURL: https://docs.haloconnect.io/halo-cloud/overview/
   baseURL: https://api.haloconnect.io
   tags:
@@ -52,10 +50,9 @@ apis:
     url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
 - aid: halo-connect:halo-cloud-desktop-api
   name: Halo Cloud API for Desktop Applications
-  description: The Halo Cloud API for desktop applications, exposing a token endpoint
-    plus SQL passthrough, FHIR R4 resource search, and registered-query operations
-    under the /desktop path. Authenticated with an Azure API Management subscription
-    key, a bearer JWT, and a device identifier header.
+  description: The Halo Cloud API for desktop applications, exposing a token endpoint plus SQL passthrough,
+    FHIR R4 resource search, and registered-query operations under the /desktop path. Authenticated with
+    an Azure API Management subscription key, a bearer JWT, and a device identifier header.
   humanURL: https://docs.haloconnect.io/halo-cloud/overview/
   baseURL: https://api.haloconnect.io
   tags:
@@ -72,14 +69,12 @@ apis:
     url: https://docs.haloconnect.io/api-reference/desktop-openapi.html
 - aid: halo-connect:halo-cloud-fhir-api
   name: Halo Cloud FHIR API
-  description: Halo Connect's FHIR API for accessing primary-care data from on-premise
-    practice management systems, based on FHIR Release 4 (R4) version 4.0.1 and built
-    toward the AU Base 4.1.0 implementation guide. Requests are site-scoped under
-    https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/{resourceType}
-    and support search, read, and the Patient $summary operation. Supported resources
-    (for example Patient, Practitioner, Appointment, DocumentReference) vary per PMS,
-    and a live CapabilityStatement is served at {baseUrl}/metadata behind subscription
-    authentication.
+  description: Halo Connect's FHIR API for accessing primary-care data from on-premise practice management
+    systems, based on FHIR Release 4 (R4) version 4.0.1 and built toward the AU Base 4.1.0 implementation
+    guide. Requests are site-scoped under https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/{resourceType}
+    and support search, read, and the Patient $summary operation. Supported resources (for example Patient,
+    Practitioner, Appointment, DocumentReference) vary per PMS, and a live CapabilityStatement is served
+    at {baseUrl}/metadata behind subscription authentication.
   humanURL: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
   baseURL: https://api.haloconnect.io
   tags:
@@ -97,6 +92,12 @@ apis:
   - type: APIReference
     url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
 common:
+- type: AgenticAccess
+  url: agentic-access/halo-connect-agentic-access.yml
+- type: DomainSecurity
+  url: security/halo-connect-domain-security.yml
+- type: Authentication
+  url: authentication/halo-connect-authentication.yml
 - type: Website
   url: https://haloconnect.io/
 - type: DeveloperPortal
@@ -112,7 +113,51 @@ common:
 - type: TrustCenter
   url: https://haloconnect.io/trust
 - type: Blog
-  url: https://haloconnect.io/blog/all
+  url: https://haloconnect.io/blog
+- type: ChangeLog
+  url: changelog/halo-connect-changelog.yml
+- type: Lifecycle
+  url: lifecycle/halo-connect-lifecycle.yml
+- type: Deprecation
+  url: https://haloconnect.io/sla
+- type: ErrorCatalog
+  url: errors/halo-connect-error-codes.yml
+- type: Conventions
+  url: conventions/halo-connect-conventions.yml
+- type: Sandbox
+  url: sandbox/halo-connect-sandbox.yml
+- type: Conformance
+  url: conformance/halo-connect-conformance.yml
+- type: Compliance
+  url: https://haloconnect.io/trust
+- type: AsyncAPI
+  url: asyncapi/halo-connect-webhooks-asyncapi.yml
+- type: Webhooks
+  url: asyncapi/halo-connect-webhooks-asyncapi.yml
+- type: VulnerabilityDisclosure
+  url: security/halo-connect-vulnerability-disclosure.yml
+- type: Security
+  url: https://docs.haloconnect.io/security/
+- type: MCPServer
+  url: mcp/halo-connect-mcp.yml
+- type: LLMsTxt
+  url: llms/halo-connect-llms.txt
+- type: DataModel
+  url: data-model/halo-connect-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/halo-connect-integrator-overlay.yaml
+- type: Overlay
+  url: overlays/halo-connect-desktop-overlay.yaml
+- type: WellKnown
+  url: well-known/halo-connect-well-known.yml
+- type: TermsOfService
+  url: https://haloconnect.io/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://haloconnect.io/privacy-policy
+- type: Support
+  url: https://haloconnect.io/contact-us
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

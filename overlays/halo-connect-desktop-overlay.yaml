@@ -1,0 +1,15 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Halo Cloud API for Desktop Applications
+  version: 1.0.0
+extends: openapi/halo-connect-desktop-openapi.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: halo-connect
+      x-apievangelist-domain: healthcare-interoperability
+      x-apievangelist-standards: [FHIR R4, AU Base 4.1.0]
+      x-apievangelist-auth: subscription-key + bearer-jwt + device-id
+      x-apievangelist-token-endpoint: /integrator/token
+      x-apievangelist-error-catalog: errors/halo-connect-error-codes.yml
+      x-apievangelist-conventions: conventions/halo-connect-conventions.yml

@@ -1,0 +1,58 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/halo-connect-integrator-openapi.json
+note: >-
+  Entity graph derived from the Integrator OpenAPI schemas and path structure.
+  The core is a Site (a paired practice, keyed by Halo GUID / siteId) that owns
+  three query types (immediate, async, registered), each of which yields paged
+  results; a FHIR facade projects site data as FHIR R4 resources.
+entities:
+  - name: Site
+    id_field: siteId
+    also: haloGuid
+    description: A paired practice management system site; carries PMS type, availability, Halo Link version, and catalogues.
+    schemas: [SiteForIntegrator, SiteStatus, SiteAvailability, SiteCatalogues, PracticeMetadata, PMSType]
+  - name: ImmediateQuery
+    id_field: queryId
+    description: Synchronous SQL passthrough query; returns results inline (<=8MB).
+    schemas: [ImmediateQuery, SuccessfulImmediateQuery, ExecutionFailedImmediateQuery, QueryResult]
+  - name: AsyncQuery
+    id_field: queryId
+    description: Asynchronous SQL passthrough query moving through queued/executing/uploading/successful/failed states.
+    schemas: [AsyncQuery, AsyncQueryQueued, AsyncQueryExecuting, AsyncQuerySuccessful, AsyncQueryResult]
+  - name: RegisteredQuery
+    id_field: queryId
+    description: Recurring query registered against a site.
+    schemas: [RegisteredQuery, RegisteredQueryPostReq, RegisteredQueryResult, RegisteredQueryStatus]
+  - name: ResultPage
+    id_field: pageNumber
+    description: A page of a query's result set.
+    schemas: [Page, ResultPageStatus, Rows]
+  - name: FhirResource
+    description: FHIR R4 resource projected from site data (Patient, Practitioner, Appointment, DocumentReference, ...).
+    schemas: [FhirResource, FhirBundle, OperationOutcome]
+relationships:
+  - from: ImmediateQuery
+    to: Site
+    kind: belongs_to
+    via: siteId
+  - from: AsyncQuery
+    to: Site
+    kind: belongs_to
+    via: siteId
+  - from: RegisteredQuery
+    to: Site
+    kind: belongs_to
+    via: siteId
+  - from: ResultPage
+    to: AsyncQuery
+    kind: belongs_to
+    via: queryId
+  - from: RegisteredQuery
+    to: RegisteredQueryResult
+    kind: has_many
+    via: queryId
+  - from: FhirResource
+    to: Site
+    kind: belongs_to
+    via: siteId

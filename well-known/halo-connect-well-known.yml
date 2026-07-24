@@ -1,0 +1,21 @@
+generated: '2026-07-24'
+method: searched
+note: >-
+  Probed the .well-known discovery surface on the API host, website, and docs
+  host. None are served (all 404) — recorded for auditability. No pointer wired.
+hosts:
+  - host: https://api.haloconnect.io
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://haloconnect.io
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+  - host: https://docs.haloconnect.io
+    documents:
+      - {path: /.well-known/security.txt, status: 404}

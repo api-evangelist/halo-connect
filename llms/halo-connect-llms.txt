@@ -1,0 +1,36 @@
+# Halo Connect
+
+> Australian healthcare interoperability platform (Brisbane, founded 2021) that exposes on-premise practice management system (PMS) databases — Best Practice, Zedmed, Dental4Windows — through a modern cloud API, via SQL passthrough or a standards-based FHIR R4 (4.0.1) facade built toward AU Base 4.1.0. Access is gated behind a Halo Cloud subscription (Azure API Management subscription keys; desktop apps also use bearer JWT + device id). No self-serve public API.
+
+## APIs
+
+- [Halo Cloud API for Integrators](https://docs.haloconnect.io/halo-cloud/overview/): Site pairing, SQL passthrough (immediate + async), FHIR R4 search, and registered (recurring) queries. Auth: Ocp-Apim-Subscription-Key.
+- [Halo Cloud API for Desktop Applications](https://docs.haloconnect.io/halo-cloud/overview/): Token endpoint + query/FHIR operations under /desktop. Auth: subscription key + bearer JWT + DeviceId.
+- [Halo Cloud FHIR API](https://docs.haloconnect.io/halo-cloud/fhir-api/overview/): FHIR R4 (4.0.1) facade toward AU Base 4.1.0; search/read + Patient $summary. CapabilityStatement at {baseUrl}/metadata.
+
+## Specs
+
+- [Integrator OpenAPI](https://raw.githubusercontent.com/api-evangelist/halo-connect/refs/heads/main/openapi/halo-connect-integrator-openapi.json)
+- [Desktop OpenAPI](https://raw.githubusercontent.com/api-evangelist/halo-connect/refs/heads/main/openapi/halo-connect-desktop-openapi.json)
+- [Webhooks AsyncAPI](https://raw.githubusercontent.com/api-evangelist/halo-connect/refs/heads/main/asyncapi/halo-connect-webhooks-asyncapi.yml)
+
+## Docs
+
+- [Getting Started](https://docs.haloconnect.io/halo-cloud/getting-started/)
+- [FHIR API Overview](https://docs.haloconnect.io/halo-cloud/fhir-api/overview/)
+- [SQL Passthrough](https://docs.haloconnect.io/halo-cloud/sql-passthrough/)
+- [Webhooks](https://docs.haloconnect.io/halo-cloud/webhooks/)
+- [Troubleshooting / Errors](https://docs.haloconnect.io/halo-cloud/troubleshooting/)
+- [Release Notes](https://docs.haloconnect.io/release-notes/)
+- [Security](https://docs.haloconnect.io/security/)
+- [API Reference — Integrator](https://docs.haloconnect.io/api-reference/integrator-openapi.html)
+- [API Reference — Desktop](https://docs.haloconnect.io/api-reference/desktop-openapi.html)
+
+## Company
+
+- [Website](https://haloconnect.io/)
+- [Trust & Security](https://haloconnect.io/trust)
+- [Status](https://status.haloconnect.io/)
+- [Blog](https://haloconnect.io/blog)
+- [SLA](https://haloconnect.io/sla)
+- [Contact](https://haloconnect.io/contact-us)

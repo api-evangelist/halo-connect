@@ -1,0 +1,65 @@
+generated: '2026-07-24'
+method: derived
+status: candidate
+source: openapi/halo-connect-integrator-openapi.json, openapi/halo-connect-desktop-openapi.json
+note: >-
+  Halo Connect publishes no hosted/remote MCP server. This is a candidate tool
+  list derived one-per-operation from the Integrator OpenAPI (the desktop API
+  mirrors the same query/FHIR surface under /desktop). Each tool inherits its
+  real inputSchema from the backing operation's parameters + requestBody.
+server:
+  name: halo-connect
+  transport: http
+  url: null
+tools:
+  - name: pair_site
+    description: Pair an integrator with a practice site.
+    source_operation: openapi/halo-connect-integrator-openapi.json#Integrator_PairSite
+  - name: get_sites
+    description: Find sites by PMS ID (exchange a PMS ID for a Halo GUID).
+    source_operation: openapi/halo-connect-integrator-openapi.json#getSites
+  - name: get_site
+    description: Get a site's status.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getSite
+  - name: create_immediate_query
+    description: Execute an immediate (synchronous) SQL passthrough query.
+    source_operation: openapi/halo-connect-integrator-openapi.json#createImmediateQuery
+  - name: create_async_query
+    description: Submit an asynchronous SQL passthrough query.
+    source_operation: openapi/halo-connect-integrator-openapi.json#createAsyncQuery
+  - name: get_query
+    description: Get the status of a query.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getQuery
+  - name: get_query_status_batch
+    description: Get the status of a batch of queries.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getQueryStatusBatch
+  - name: get_result_page
+    description: Get a page of query results.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getResultPage
+  - name: stream_result_page
+    description: Stream a page of query results.
+    source_operation: openapi/halo-connect-integrator-openapi.json#streamResultPage
+  - name: create_registered_query
+    description: Create a registered (recurring) query.
+    source_operation: openapi/halo-connect-integrator-openapi.json#createRegisteredQuery
+  - name: get_registered_queries
+    description: List registered queries.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getRegisteredQueries
+  - name: get_registered_query
+    description: Get registered query details.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getRegisteredQuery
+  - name: cancel_registered_query
+    description: Cancel a registered query.
+    source_operation: openapi/halo-connect-integrator-openapi.json#cancelRegisteredQuery
+  - name: get_registered_query_result
+    description: Get registered query results.
+    source_operation: openapi/halo-connect-integrator-openapi.json#getRegisteredQueryResult
+  - name: search_fhir
+    description: Search FHIR R4 resources (GET).
+    source_operation: openapi/halo-connect-integrator-openapi.json#getFhirQuery
+  - name: post_fhir_search
+    description: Search FHIR R4 resources (POST _search).
+    source_operation: openapi/halo-connect-integrator-openapi.json#postFhirSearch
+  - name: obtain_token
+    description: Obtain a desktop authorization (bearer JWT) token.
+    source_operation: openapi/halo-connect-desktop-openapi.json#obtainToken

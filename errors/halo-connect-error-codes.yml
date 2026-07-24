@@ -1,0 +1,97 @@
+generated: '2026-07-24'
+method: searched
+source: https://docs.haloconnect.io/halo-cloud/troubleshooting/
+format: custom
+note: >-
+  Halo Cloud returns three error envelope shapes depending on surface: a general
+  API error envelope, a per-query errorDetails object, and (for the FHIR API) a
+  standard FHIR R4 OperationOutcome. Not RFC 9457 problem+json.
+envelopes:
+  general:
+    example:
+      status: 400
+      statusText: Bad Request
+      message: Halo GUID must be provided.
+    fields: [status, statusText, message]
+  query:
+    example:
+      errorDetails:
+        errorType: http
+        errorCode: 413
+        errorMessage: Query was executed successfully but an error occurred preparing it...
+    fields: [errorDetails.errorType, errorDetails.errorCode, errorDetails.errorMessage]
+  fhir:
+    example:
+      resourceType: OperationOutcome
+      issue:
+        - severity: fatal
+          code: exception
+          details:
+            coding:
+              - system: '...'
+                code: '5003'
+            text: Unable to parse Resource URL
+    fields: ['resourceType', 'issue[].severity', 'issue[].code', 'issue[].details']
+error_types:
+  - type: mssql
+    meaning: Microsoft SQL Server error; indicates a SQL query issue.
+  - type: fbsql
+    meaning: Firebird SQL error; indicates a SQL query issue.
+  - type: http
+    meaning: HTTP transfer error while retrieving data from the site.
+  - type: haloLink
+    meaning: Unexpected error during data transfer; contact support.
+http_statuses:
+  - status: 200
+    meaning: Immediate/FHIR queries executed and returned; async/registered queries received and queued.
+  - status: 400
+    title: Bad Request
+    causes: Invalid requests, SQL issues, parameter mismatches
+    examples: ['Login failed for user [userID]', "Required parameter 'practiceId' is missing", 'Invalid column name', 'Failed to convert parameter value']
+    remediation: Validate request format, JSON payload, SQL syntax, and parameter types; contact the practice for login failures.
+  - status: 401
+    title: Unauthorized
+    causes: Wrong API key or wrong environment
+    examples: ['Subscription Key Invalid', 'Subscription Key Not Found', 'Invalid token']
+    remediation: Verify the subscription key and that it matches the environment (Stage vs Production).
+  - status: 403
+    title: Forbidden
+    causes: IP not allowlisted, non-authoritative practice, quota exceeded
+    examples: ['Caller Ip Not Allowed']
+    remediation: Contact support for IP allowlisting; re-fetch the practice Halo GUID.
+  - status: 404
+    title: Not Found
+    causes: Invalid endpoints or malformed URLs
+    examples: ['Operation Not Found']
+    remediation: Review endpoint URLs and HTTP methods; check the API reference.
+  - status: 413
+    title: Payload Too Large
+    causes: Results exceed the 8MB immediate-query limit
+    examples: ['Query Results Too Large', 'Immediate query results beyond message size limit (8mb)']
+    remediation: Add WHERE clauses, use pagination, switch to async queries, or break into smaller queries.
+  - status: 429
+    title: Too Many Requests
+    causes: Rate limiting exceeded
+    examples: ['Rate Limit Exceeded']
+    remediation: Check the Retry-After header, throttle requests, use exponential backoff, contact support.
+  - status: 500
+    title: Internal Server Error
+    causes: Internal server processing errors
+    remediation: Apply exponential backoff; contact support if persistent.
+  - status: 503
+    title: Service Unavailable
+    causes: Practice server offline before the query attempt; network failures
+    examples: ['Site could not be contacted']
+    remediation: Apply backoff, check for maintenance, contact support.
+  - status: 504
+    title: Gateway Timeout
+    causes: Long-running queries (>30s), server offline after attempt, timeouts
+    examples: ['Query took more than 30 seconds', 'Site is unreachable', 'Site is offline']
+    remediation: Optimize SQL or use async queries; apply backoff; monitor siteStatus.
+known_issues:
+  - issue: Parameter conversion failures for VarBinary arrays >8,000 bytes or NVarChar >4,000 chars in stored procedures
+    solution: Use explicit SQL with variable declarations instead of storedProcedure command type.
+  - issue: Registered queries fail to expire (race condition)
+    solution: Fixed in Halo Link 25.1210.7669; restart the instance for older versions.
+  - issue: Persistent 504s despite Halo Link online (immediate-query thread loses Web PubSub connection)
+    solution: Fixed in Halo Link 26.202.8289; restart the instance for older versions.

@@ -1,0 +1,24 @@
+generated: '2026-07-24'
+method: searched
+probe: true
+url: https://haloconnect.io/trust
+certifications:
+  - CyberCert SMB1001-2023 Level 3 (Gold)
+  - ISO 27001 (policies/procedures align to principles; not stated as certified)
+frameworks:
+  - ACSC (Australian Cyber Security Centre) guidelines
+  - OWASP recommendations
+  - Australian Privacy Principles
+practices:
+  - TLS 1.3 encryption in transit
+  - No data retention; no data inspection beyond practice identification
+  - Two-factor authentication and role-based access control
+  - Zero Trust security model
+  - Regular third-party penetration testing and architecture reviews
+  - Australian-based, allowlisted integrator IP addresses
+data_residency:
+  region: Australia
+  provider: Microsoft Azure (Australian datacenters)
+evidence:
+  - source: https://haloconnect.io/trust
+    keywords: [cybercert, iso 27001, acsc, owasp, tls 1.3, zero trust, penetration testing]

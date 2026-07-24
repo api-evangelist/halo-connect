@@ -1,0 +1,49 @@
+generated: '2026-07-24'
+method: searched
+source: https://docs.haloconnect.io/halo-cloud/getting-started/, https://docs.haloconnect.io/halo-cloud/troubleshooting/
+authentication:
+  style: API-management subscription key + (desktop) bearer JWT + device id header
+  integrator: 'Ocp-Apim-Subscription-Key header'
+  desktop: 'Ocp-Apim-Subscription-Key + Authorization: Bearer <JWT> + DeviceId header; token obtained from POST /integrator/token'
+  see: authentication/halo-connect-authentication.yml
+environments:
+  production: https://api.haloconnect.io
+  staging: https://api.stage.haloconnect.io
+  note: Production subscription keys cannot be used against staging and vice versa.
+  see: sandbox/halo-connect-sandbox.yml
+site_scoping:
+  mechanism: Halo GUID (siteId) in the request URI
+  resolution: Exchange a practice PMS ID for its Halo GUID via GET /integrator/sites (getSites).
+idempotency:
+  documented: false
+  note: >-
+    No idempotency-key header or mechanism is documented. Queries are addressed
+    by server-assigned queryId; re-submitting a query creates a new query.
+pagination:
+  style: page-number path segment
+  params: 'pageNumber path parameter on /queries/{queryId}/results/{pageNumber}'
+  streaming: 'a /results/{pageNumber}/stream variant streams a result page (integrator API)'
+  size_limit: Immediate query results are capped at 8MB (HTTP 413 when exceeded); use async/registered queries or narrower queries for larger result sets.
+async_model:
+  submit: POST .../queries/async returns a queued query with a queryId
+  poll: GET .../queries/{queryId} (getQuery) for status; batch status via POST .../queries/status
+  results: GET .../queries/{queryId}/results/{pageNumber}
+  notify: optional webhook on completion (see asyncapi/halo-connect-webhooks-asyncapi.yml)
+rate_limiting:
+  signaled: true
+  status: 429
+  header: Retry-After
+  guidance: Throttle requests and use exponential backoff.
+error_envelope:
+  shapes: [general, query errorDetails, FHIR OperationOutcome]
+  see: errors/halo-connect-error-codes.yml
+versioning:
+  scheme: calendar (YY.MMDD); breaking changes 90 days notice, non-breaking 10 days
+  see: lifecycle/halo-connect-lifecycle.yml
+webhooks:
+  supported: true
+  sources: [async, registered]
+  signature: HMAC-SHA256 (X-Halo-Signature-256)
+  see: asyncapi/halo-connect-webhooks-asyncapi.yml
+timeouts:
+  immediate_query: '>30s returns HTTP 504; use async queries for long-running work'

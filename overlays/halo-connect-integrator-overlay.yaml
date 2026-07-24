@@ -1,0 +1,18 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Halo Cloud API for Integrators
+  version: 1.0.0
+extends: openapi/halo-connect-integrator-openapi.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: halo-connect
+      x-apievangelist-domain: healthcare-interoperability
+      x-apievangelist-standards: [FHIR R4, AU Base 4.1.0]
+      x-apievangelist-auth: azure-apim-subscription-key
+      x-apievangelist-webhooks: asyncapi/halo-connect-webhooks-asyncapi.yml
+      x-apievangelist-error-catalog: errors/halo-connect-error-codes.yml
+      x-apievangelist-conventions: conventions/halo-connect-conventions.yml
+  - target: $.paths['/integrator/pairSite'].post
+    update:
+      x-apievangelist-note: Deprecated in favor of /integrator/pair-site (Integrator_PairSite).

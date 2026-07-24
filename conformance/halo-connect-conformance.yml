@@ -1,0 +1,55 @@
+generated: '2026-07-24'
+method: searched
+source: >-
+  openapi/halo-connect-integrator-openapi.json,
+  openapi/halo-connect-desktop-openapi.json,
+  https://haloconnect.io/trust, https://docs.haloconnect.io/security/
+standards:
+  - id: fhir-r4
+    conforms: true
+    evidence: >-
+      FHIR API based on FHIR Release 4 (4.0.1); serves a CapabilityStatement at
+      {baseUrl}/metadata and supports search/read plus operations such as
+      Patient $summary, $waitlist, $find-free. It is a FHIR facade (SQL-backed),
+      not a full FHIR server.
+  - id: au-base-4.1.0
+    conforms: partial
+    evidence: Built toward the AU Base 4.1.0 implementation guide; supported resources vary per PMS.
+  - id: hl7-fhir-operationoutcome
+    conforms: true
+    evidence: FHIR API returns standard OperationOutcome resources on error.
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securityScheme; auth is Azure APIM subscription key + bearer JWT + device id.
+  - id: oidc
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors use custom envelopes (general + query errorDetails) and FHIR OperationOutcome, not application/problem+json.
+  - id: rate-limit-retry-after
+    conforms: true
+    evidence: 429 responses carry a Retry-After header.
+  - id: pagination
+    conforms: true
+    evidence: Result pages addressed by pageNumber path segment, with a streaming variant.
+  - id: idempotency
+    conforms: false
+    evidence: No idempotency-key mechanism documented.
+  - id: iso-27001
+    conforms: partial
+    evidence: '"Internal policies and procedures align to ISO 27001 principles" (docs.haloconnect.io/security). Not stated as certified.'
+  - id: cybercert-smb1001
+    conforms: true
+    evidence: CyberCert SMB Certification, Gold level (SMB1001-2023-Level-3) badge on trust page.
+  - id: acsc-essential-eight
+    conforms: partial
+    evidence: Strives to conform to Australian security standards set by the ACSC.
+  - id: owasp
+    conforms: partial
+    evidence: Strives to implement OWASP recommendations.
+  - id: australian-privacy-principles
+    conforms: true
+    evidence: Complies with Australia's privacy laws and follows the Australian Privacy Principles for breach notification.
+data_residency:
+  region: Australia
+  evidence: All data hosted on Australian-based Microsoft Azure datacenters; no data retention.

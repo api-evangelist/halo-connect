@@ -1,0 +1,113 @@
+generated: '2026-07-24'
+method: generated
+source: https://docs.haloconnect.io/halo-cloud/webhooks/
+spec_type: AsyncAPI
+note: >-
+  Halo Connect publishes no AsyncAPI document; this 3.0 spec is a faithful
+  generation of the documented webhook surface (query-completion notifications
+  for async and registered queries) captured verbatim from the webhooks docs.
+asyncapi: 3.0.0
+info:
+  title: Halo Connect Webhooks
+  version: '1.0.0'
+  description: >-
+    Halo Cloud delivers HTTPS POST webhook notifications when an async or a
+    registered query completes. The payload does NOT include the query result;
+    the integrator retrieves results via the REST API using the provided
+    queryId. Each request is HMAC-SHA256 signed and carries replay-prevention
+    headers. Webhooks are configured by Halo support per subscription.
+  contact:
+    name: Halo Connect Support
+    url: https://docs.haloconnect.io/halo-cloud/webhooks/
+servers:
+  integrator-endpoint:
+    host: your-endpoint.example.com
+    protocol: https
+    description: >-
+      The integrator-hosted HTTPS endpoint (configured by Halo support).
+      Optionally separate URLs may be configured for async vs registered
+      sources. URLs support {siteId}, {queryId}, {source} template variables.
+channels:
+  queryCompleted:
+    address: /
+    description: Delivered as an HTTPS POST when a query completes.
+    messages:
+      QueryCompletedNotification:
+        $ref: '#/components/messages/QueryCompletedNotification'
+operations:
+  onQueryCompleted:
+    action: receive
+    channel:
+      $ref: '#/channels/queryCompleted'
+    summary: Handle a query-completion webhook notification.
+    messages:
+      - $ref: '#/channels/queryCompleted/messages/QueryCompletedNotification'
+components:
+  messages:
+    QueryCompletedNotification:
+      name: QueryCompletedNotification
+      title: Query completed notification
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-Halo-Id:
+            type: string
+            description: Webhook notification UUID (mirrors payload id).
+          X-Halo-Timestamp:
+            type: string
+            description: ISO 8601 timestamp; used for replay prevention (reject if >5 minutes old).
+          X-Halo-Signature-256:
+            type: string
+            description: >-
+              HMAC-SHA256 of (raw JSON body + "." + timestamp) using the
+              integrator-specific secret, lowercase hex, 64 chars.
+      payload:
+        $ref: '#/components/schemas/QueryCompletedPayload'
+      examples:
+        - name: asyncCompleted
+          payload:
+            id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            occurredAt: '2026-03-05T14:30:00.0000000+00:00'
+            siteId: 12345678-abcd-ef01-2345-6789abcdef01
+            queryId: abcdef01-2345-6789-abcd-ef0123456789
+            webhookSource: async
+  schemas:
+    QueryCompletedPayload:
+      type: object
+      required: [id, occurredAt, siteId, queryId, webhookSource]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique webhook notification identifier.
+        occurredAt:
+          type: string
+          format: date-time
+          description: Query completion timestamp (ISO 8601).
+        siteId:
+          type: string
+          format: uuid
+          description: Halo site identifier.
+        queryId:
+          type: string
+          format: uuid
+          description: Completed query identifier; use to retrieve results via REST.
+        webhookSource:
+          type: string
+          enum: [async, registered]
+          description: Which query surface produced the event.
+x-delivery:
+  method: HTTPS POST
+  content_type: application/json
+  retry: decorrelated jitter exponential backoff, up to 10 attempts (~5s first, ~90min max window)
+  per_attempt_timeout_seconds: 5
+  success: any 2xx halts retries
+  no_retry: 4xx except 408/429
+  retry_on: 5xx, 408, 429
+x-verification:
+  signature_header: X-Halo-Signature-256
+  algorithm: HMAC-SHA256
+  signed_content: raw JSON body + "." + X-Halo-Timestamp value
+  encoding: lowercase hex (64 chars)
+  replay_window_minutes: 5

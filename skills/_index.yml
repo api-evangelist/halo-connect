@@ -1,0 +1,20 @@
+generated: '2026-07-24'
+method: generated
+source: openapi/halo-connect-integrator-openapi.json
+skills:
+  - file: halo-connect-pair-site-and-query.md
+    name: Pair a site and run an immediate query
+    api: openapi/halo-connect-integrator-openapi.json
+    operations: [getSites, Integrator_PairSite, getSite, createImmediateQuery, getResultPage]
+  - file: halo-connect-async-query-and-poll.md
+    name: Submit an async query and collect results
+    api: openapi/halo-connect-integrator-openapi.json
+    operations: [createAsyncQuery, getQuery, getQueryStatusBatch, getResultPage, streamResultPage]
+  - file: halo-connect-fhir-search.md
+    name: Search primary-care data with the FHIR R4 API
+    api: openapi/halo-connect-integrator-openapi.json
+    operations: [getSite, getFhirQuery, postFhirSearch]
+  - file: halo-connect-registered-query.md
+    name: Manage registered (recurring) queries
+    api: openapi/halo-connect-integrator-openapi.json
+    operations: [createRegisteredQuery, getRegisteredQueries, getRegisteredQuery, getRegisteredQueryResult, cancelRegisteredQuery]
