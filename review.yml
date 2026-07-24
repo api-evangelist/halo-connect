@@ -1,0 +1,140 @@
+aid: halo-connect
+name: Halo Connect
+review:
+  question: Does Halo Connect expose a documented public API, and what is its FHIR
+    and authentication posture?
+  answer: true
+  date: '2026-07-24'
+  reviewer: API Evangelist
+findings:
+  summary: |
+    Halo Connect (haloconnect.io; primary domain also resolves at
+    haloconnect.com.au) is an Australian healthcare interoperability platform
+    that exposes on-premise practice management system (PMS) databases - Best
+    Practice, Zedmed, Dental4Windows - through its Halo Cloud API. It publishes
+    a real developer portal at https://docs.haloconnect.io/ (HTTP 200) with two
+    machine-readable OpenAPI 3.1.1 specifications served as JSON: the Halo Cloud
+    API for Integrators and the Halo Cloud API for Desktop Applications, both at
+    version 26.619.10213 with servers https://api.haloconnect.io and
+    https://api.stage.haloconnect.io. Both specs were harvested verbatim into
+    openapi/. The FHIR surface is FHIR Release 4 (R4) version 4.0.1, built toward
+    the AU Base 4.1.0 implementation guide, and is reached site-scoped under
+    https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/{resourceType}
+    (and the equivalent /desktop path). A live FHIR CapabilityStatement is
+    documented at {baseUrl}/metadata but is site-scoped and gated behind a Halo
+    Cloud subscription, so no CapabilityStatement JSON could be captured
+    anonymously. This is a gated partner API, not self-serve: access requires a
+    Halo Cloud subscription and, per PMS, database credentials for the tables
+    backing each FHIR resource.
+  developerPortal:
+    url: https://docs.haloconnect.io/
+    status: 200
+    confirmed: true
+  fhir:
+    capabilityStatementCaptured: false
+    version: FHIR R4 4.0.1 (built toward AU Base 4.1.0)
+    metadataEndpoint: '{baseUrl}/metadata (site-scoped, subscription-gated - not
+      fetchable anonymously)'
+    baseUrlPattern: https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/{resourceType}
+    resourcesNote: |
+      Supported FHIR resources vary per PMS; the docs direct integrators to the
+      per-PMS CapabilityStatement. Resources named in examples include Patient,
+      Practitioner, Appointment, DocumentReference, and Bundle, with a Patient
+      $summary operation.
+  specsHarvested:
+    count: 2
+    provenance:
+    - path: openapi/halo-connect-integrator-openapi.json
+      source: https://docs.haloconnect.io/api-reference/integrator-openapi.json
+      status: 200
+      openapi: 3.1.1
+      title: Halo Cloud API for Integrators
+      version: 26.619.10213
+      paths: 15
+    - path: openapi/halo-connect-desktop-openapi.json
+      source: https://docs.haloconnect.io/api-reference/desktop-openapi.json
+      status: 200
+      openapi: 3.1.1
+      title: Halo Cloud API for Desktop Applications
+      version: 26.619.10213
+      paths: 10
+  authModel:
+    smartOnFhir: false
+    schemes:
+    - name: SubscriptionKey
+      type: apiKey
+      location: header (Ocp-Apim-Subscription-Key) - Azure API Management subscription
+        key
+    - name: AuthorizationHeader
+      type: http bearer (JWT) - issued from POST /integrator/token (Desktop API)
+    - name: DeviceIdHeader
+      type: apiKey
+      location: header (DeviceId) - Desktop API
+    note: |
+      No SMART-on-FHIR authorization was found. /.well-known/smart-configuration
+      and /.well-known/openid-configuration on api.haloconnect.io both returned
+      404. Auth is Azure APIM subscription keys plus, for desktop apps, bearer
+      JWTs and a device identifier.
+  homeMarket: Australia
+  standardsConformance:
+    auBase: true
+    auCore: unstated
+    usCore: false
+    ukCore: false
+    daVinci: false
+    carin: false
+    note: |
+      FHIR R4 4.0.1 built toward AU Base 4.1.0. No claim of AU Core, US Core, UK
+      Core, Da Vinci, or CARIN conformance was found in the documentation.
+  access:
+    model: gated-partner
+    selfServe: false
+    note: |
+      Access requires a Halo Cloud subscription; the FHIR/SQL API is available to
+      approved software integrators and PMS partners (for example, the FHIR API
+      for Best Practice Premier is limited to approved Best Practice Partners). No
+      endpoints exist behind the gate that were fabricated - only the documented,
+      OpenAPI-described surface is recorded.
+  transports:
+  - protocol: REST
+    scheme: https
+    baseURL: https://api.haloconnect.io
+    documented: true
+  - protocol: FHIR REST (R4)
+    scheme: https
+    baseURL: https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4
+    documented: true
+  - protocol: Webhooks
+    scheme: https
+    note: Halo Cloud documents webhooks; no delivery contract was captured.
+    documented: true
+  - protocol: WebSocket
+    scheme: wss
+    documented: false
+    note: No WebSocket endpoint is documented as of the review date.
+sources:
+- url: https://docs.haloconnect.io/
+  type: DeveloperPortal
+  note: Developer portal, HTTP 200; lists Halo Link, Halo Cloud, FHIR API, SQL Passthrough,
+    Integrator API, and Desktop API.
+- url: https://docs.haloconnect.io/api-reference/integrator-openapi.json
+  type: OpenAPI
+  note: OpenAPI 3.1.1, Halo Cloud API for Integrators, harvested verbatim. HTTP 200.
+- url: https://docs.haloconnect.io/api-reference/desktop-openapi.json
+  type: OpenAPI
+  note: OpenAPI 3.1.1, Halo Cloud API for Desktop Applications, harvested verbatim.
+    HTTP 200.
+- url: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
+  type: Documentation
+  note: FHIR R4 4.0.1; base URL pattern and GET/POST call conventions. HTTP 200.
+- url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
+  type: Documentation
+  note: Documents {baseUrl}/metadata CapabilityStatement; resources vary per PMS.
+    HTTP 200.
+- url: https://haloconnect.io/blog/fhir-for-bp-premier
+  type: Blog
+  note: Announces the FHIR API for Best Practice Premier, AU Base 4.1.0 with R4 4.0.1
+    fallback, gated to approved Best Practice Partners.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
