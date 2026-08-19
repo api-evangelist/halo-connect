@@ -26,7 +26,7 @@ tags:
 - Health Data
 created: '2026-07-24'
 modified: '2026-07-24'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: halo-connect:halo-cloud-integrator-api
   name: Halo Cloud API for Integrators
