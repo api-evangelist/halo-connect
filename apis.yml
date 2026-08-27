@@ -28,69 +28,121 @@ created: '2026-07-24'
 modified: '2026-07-24'
 specificationVersion: '0.23'
 apis:
-- aid: halo-connect:halo-cloud-integrator-api
-  name: Halo Cloud API for Integrators
-  description: The Halo Cloud API for third-party software integrators to query on-premise practice management
-    system databases over the cloud, covering site pairing, SQL passthrough (immediate and async queries),
-    FHIR R4 resource search, and registered (recurring) queries. Authenticated with an Azure API Management
-    subscription key.
+- aid: halo-connect:halo-connect-fhir-api
+  name: Halo Connect FHIR API
+  description: Query practice data using FHIR resources.
   humanURL: https://docs.haloconnect.io/halo-cloud/overview/
   baseURL: https://api.haloconnect.io
   tags:
   - FHIR
-  - Healthcare
-  - Interoperability
-  - SQL
   properties:
   - type: OpenAPI
-    url: openapi/halo-connect-integrator-openapi.json
+    url: openapi/halo-connect-fhir-api-openapi.yml
   - type: Documentation
     url: https://docs.haloconnect.io/halo-cloud/overview/
   - type: APIReference
     url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
-- aid: halo-connect:halo-cloud-desktop-api
-  name: Halo Cloud API for Desktop Applications
-  description: The Halo Cloud API for desktop applications, exposing a token endpoint plus SQL passthrough,
-    FHIR R4 resource search, and registered-query operations under the /desktop path. Authenticated with
-    an Azure API Management subscription key, a bearer JWT, and a device identifier header.
-  humanURL: https://docs.haloconnect.io/halo-cloud/overview/
-  baseURL: https://api.haloconnect.io
-  tags:
-  - FHIR
-  - Healthcare
-  - Interoperability
-  - SQL
-  properties:
-  - type: OpenAPI
-    url: openapi/halo-connect-desktop-openapi.json
-  - type: Documentation
-    url: https://docs.haloconnect.io/halo-cloud/overview/
   - type: APIReference
     url: https://docs.haloconnect.io/api-reference/desktop-openapi.html
-- aid: halo-connect:halo-cloud-fhir-api
-  name: Halo Cloud FHIR API
-  description: Halo Connect's FHIR API for accessing primary-care data from on-premise practice management
-    systems, based on FHIR Release 4 (R4) version 4.0.1 and built toward the AU Base 4.1.0 implementation
-    guide. Requests are site-scoped under https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/{resourceType}
-    and support search, read, and the Patient $summary operation. Supported resources (for example Patient,
-    Practitioner, Appointment, DocumentReference) vary per PMS, and a live CapabilityStatement is served
-    at {baseUrl}/metadata behind subscription authentication.
-  humanURL: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
-  baseURL: https://api.haloconnect.io
-  tags:
-  - FHIR
-  - Healthcare
-  - AU Base
-  - Interoperability
-  properties:
-  - type: OpenAPI
-    url: openapi/halo-connect-integrator-openapi.json
   - type: Documentation
     url: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
   - type: Documentation
     url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
+- aid: halo-connect:halo-connect-registered-queries-api
+  name: Halo Connect Registered Queries API
+  description: The Registered Queries API from Halo Connect — 6 operation(s) for registered queries.
+  humanURL: https://docs.haloconnect.io/halo-cloud/overview/
+  baseURL: https://api.haloconnect.io
+  tags:
+  - Registered Queries
+  properties:
+  - type: OpenAPI
+    url: openapi/halo-connect-registered-queries-api-openapi.yml
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/overview/
   - type: APIReference
     url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/desktop-openapi.html
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
+- aid: halo-connect:halo-connect-sites-api
+  name: Halo Connect Sites API
+  description: Endpoints for practice onboarding and site metadata.
+  humanURL: https://docs.haloconnect.io/halo-cloud/overview/
+  baseURL: https://api.haloconnect.io
+  tags:
+  - Sites
+  properties:
+  - type: OpenAPI
+    url: openapi/halo-connect-sites-api-openapi.yml
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/overview/
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/desktop-openapi.html
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
+- aid: halo-connect:halo-connect-sql-passthrough-api
+  name: Halo Connect SQL Passthrough API
+  description: >-
+    Send SQL queries to practices as immediate, async or registered queries.
+
+
+    **Immediate queries** are small, time-sensitive queries that return a result in seconds. Response
+    size is limited to 8MB.
+
+
+    **Async queries** are queued for execution and results can be retrieved later. The workflow is:
+
+      1. **Submit async query** – Creates a query and returns a `queryId` on success.
+      2. **Get query status** – Check query status. When complete, includes pagination details.
+      3. **Get query result page** – Retrieve result pages using the pagination info from the status response.
+
+    **Registered Queries** are also supported. See the [Registered Queries](#tag/Registered-Queries) section
+    for more information.
+  humanURL: https://docs.haloconnect.io/halo-cloud/overview/
+  baseURL: https://api.haloconnect.io
+  tags:
+  - SQL Passthrough
+  properties:
+  - type: OpenAPI
+    url: openapi/halo-connect-sql-passthrough-api-openapi.yml
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/overview/
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/desktop-openapi.html
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
+- aid: halo-connect:halo-connect-tokens-api
+  name: Halo Connect Tokens API
+  description: Obtain authorization tokens for desktop applications to authenticate API requests.
+  humanURL: https://docs.haloconnect.io/halo-cloud/overview/
+  baseURL: https://api.haloconnect.io
+  tags:
+  - Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/halo-connect-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/overview/
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/integrator-openapi.html
+  - type: APIReference
+    url: https://docs.haloconnect.io/api-reference/desktop-openapi.html
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/overview/
+  - type: Documentation
+    url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
 common:
 - type: AgenticAccess
   url: agentic-access/halo-connect-agentic-access.yml
