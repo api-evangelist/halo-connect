@@ -1,0 +1,25 @@
+slug: halo-connect
+provider: Halo Connect
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Healthcare Providers
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: FHIR
+  spec_file: halo-connect-fhir-api-openapi.yml
+  capability_id: BC-2900.60
+  capability_id_l1: BC-2900
+  capability_name: Healthcare Interoperability Operations
+  confidence: 0.78
+  evidence: '"GET /integrator/sites/{siteId}/fhir/R4/{fhirParameters}  Search FHIR resources"'
+  reason: Standards-based FHIR R4 query access to practice management clinical data across connected sites
+    is exactly the operation of FHIR endpoints for health information exchange described by Healthcare
+    Interoperability Operations.

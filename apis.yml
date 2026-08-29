@@ -156,6 +156,9 @@ apis:
   - type: Documentation
     url: https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/
 common:
+- type: CapabilityMap
+  url: capabilities/halo-connect-capability-edges.yml
+  name: Halo Connect Business Capability Map
 - type: AgenticAccess
   url: agentic-access/halo-connect-agentic-access.yml
 - type: DomainSecurity
