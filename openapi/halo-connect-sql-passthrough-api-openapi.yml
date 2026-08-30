@@ -1,0 +1,4814 @@
+openapi: 3.2.0
+info:
+  title: Halo Connect SQL Passthrough API
+  version: 26.619.10213
+  license:
+    name: Copyright © Halo Connect 2023
+    url: http://haloconnect.io
+  x-logo:
+    url: https://20496383.fs1.hubspotusercontent-na1.net/hubfs/20496383/halo_logo%20(1).png
+    altText: Halo Connect Logo
+  description: 'Operations tagged SQL Passthrough across 2 of this provider''s published API definitions: halo-connect-desktop-openapi.json, halo-connect-integrator-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.haloconnect.io
+  description: Production
+- url: https://api.stage.haloconnect.io
+  description: Stage
+tags:
+- name: SQL Passthrough
+  description: "Send SQL queries to practices as immediate, async or registered queries.\n\n**Immediate queries** are small, time-sensitive queries that return a result in seconds. Response size is limited to 8MB.\n\n**Async queries** are queued for execution and results can be retrieved later. The workflow is:\n\n  1. **Submit async query** – Creates a query and returns a `queryId` on success.\n  2. **Get query status** – Check query status. When complete, includes pagination details.\n  3. **Get query result page** – Retrieve result pages using the pagination info from the status response.\n\n**Registered Queries** are also supported. See the [Registered Queries](#tag/Registered-Queries) section for more information.\n"
+paths:
+  /desktop/sites/{siteId}/queries/immediate:
+    post:
+      tags:
+      - SQL Passthrough
+      summary: Execute immediate query
+      description: 'Send an immediate query to a site and receive the result in the response.
+
+
+        Query status can also be retrieved using the **Get query status** endpoint.
+
+        '
+      operationId: createImmediateQuery
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Immediate query executed.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - id
+                  - integratorId
+                  - siteId
+                  - mode
+                  - status
+                  - maxTimeInQueue
+                  - commandSize
+                  - createdAt
+                  - updatedAt
+                  - requestSize
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      description: Unique identifier of the entity.
+                    integratorId:
+                      type: string
+                      format: uuid
+                      description: Id of the Integrator that created the query.
+                    siteId:
+                      type: string
+                      format: uuid
+                      description: Halo GUID of the site.
+                    mode:
+                      type: string
+                      enum:
+                      - immediate
+                    maxTimeInQueue:
+                      type: integer
+                      format: milli-seconds
+                      example: 15000
+                      minimum: 0
+                      maximum: 60000
+                      default: 30000
+                    commandSize:
+                      type: integer
+                      example: 98
+                    requestSize:
+                      type: integer
+                      example: 98
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+                - type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - successful
+                    statusTiming:
+                      allOf:
+                      - type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                          downloading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                        - executing
+                    metrics:
+                      type: object
+                      required:
+                      - sqlExecutionDuration
+                      properties:
+                        sqlExecutionDuration:
+                          type: integer
+                          example: 1000
+                          description: The number of milli-seconds from when Halo Link Service sends a query to the database until it gets a response.
+                    result:
+                      oneOf:
+                      - type: object
+                        required:
+                        - rows
+                        - size
+                        - data
+                        properties:
+                          rows:
+                            type: integer
+                            example: 30
+                          size:
+                            type: integer
+                            example: 25
+                          data:
+                            type: string
+                            format: base64
+                            description: Result data that is base64 encoded returned from the executed query.
+                            example: e2lk...
+                          parameters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                  example: '@siteid'
+                                  description: The name of the parameter.
+                                direction:
+                                  description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                                  type: string
+                                  enum:
+                                  - output
+                                  - input
+                                  - inputOutput
+                                  - returnValue
+                                type:
+                                  description: Specifies SQL Server-specific data type of a field, property.
+                                  type: string
+                                  enum:
+                                  - BigInt
+                                  - Binary
+                                  - Bit
+                                  - Char
+                                  - String
+                                  - Date
+                                  - DateTime
+                                  - DateTime2
+                                  - DateTimeOffset
+                                  - Decimal
+                                  - Float
+                                  - Image
+                                  - Int
+                                  - Money
+                                  - NChar
+                                  - NText
+                                  - NVarChar
+                                  - Real
+                                  - SmallDateTime
+                                  - SmallInt
+                                  - SmallMoney
+                                  - Structured
+                                  - Text
+                                  - Time
+                                  - Timestamp
+                                  - TinyInt
+                                  - Udt
+                                  - UniqueIdentifier
+                                  - VarBinary
+                                  - VarChar
+                                  - Variant
+                                  - Xml
+                                value:
+                                  description: Gets or sets the value of the parameter.
+                                  type:
+                                  - string
+                                  - 'null'
+                                  format: base64 (output)
+                                  example: '66'
+                                size:
+                                  description: The maximum size, in bytes, of the data within the column.
+                                  type: integer
+                                  example: 43
+                      - type: object
+                        required:
+                        - rowsAffected
+                        - size
+                        properties:
+                          rowsAffected:
+                            type: integer
+                            example: 30
+                          size:
+                            type: integer
+                            example: 25
+                          parameters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                  example: '@siteid'
+                                  description: The name of the parameter.
+                                direction:
+                                  description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                                  type: string
+                                  enum:
+                                  - output
+                                  - input
+                                  - inputOutput
+                                  - returnValue
+                                type:
+                                  description: Specifies SQL Server-specific data type of a field, property.
+                                  type: string
+                                  enum:
+                                  - BigInt
+                                  - Binary
+                                  - Bit
+                                  - Char
+                                  - String
+                                  - Date
+                                  - DateTime
+                                  - DateTime2
+                                  - DateTimeOffset
+                                  - Decimal
+                                  - Float
+                                  - Image
+                                  - Int
+                                  - Money
+                                  - NChar
+                                  - NText
+                                  - NVarChar
+                                  - Real
+                                  - SmallDateTime
+                                  - SmallInt
+                                  - SmallMoney
+                                  - Structured
+                                  - Text
+                                  - Time
+                                  - Timestamp
+                                  - TinyInt
+                                  - Udt
+                                  - UniqueIdentifier
+                                  - VarBinary
+                                  - VarChar
+                                  - Variant
+                                  - Xml
+                                value:
+                                  description: Gets or sets the value of the parameter.
+                                  type:
+                                  - string
+                                  - 'null'
+                                  format: base64 (output)
+                                  example: '66'
+                                size:
+                                  description: The maximum size, in bytes, of the data within the column.
+                                  type: integer
+                                  example: 43
+                    resultSize:
+                      type: integer
+                      example: 98
+                    completedAt:
+                      type: string
+                      format: date-time
+                  required:
+                  - statusTiming
+                  - metrics
+                  - result
+                  - completedAt
+        '400':
+          description: Bad Request - Invalid request path, parameter or body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '503':
+          description: The server is not ready to handle the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+        '504':
+          description: Server request to upstream resource timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                properties:
+                  maxTimeInQueue:
+                    type: integer
+                    format: milli-seconds
+                    example: 15000
+                    minimum: 0
+                    maximum: 60000
+                    default: 30000
+                  command:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                        example: GetPatientID
+                        description: The SQL statement to execute or the name of the stored procedure to run.
+                      executionMode:
+                        description: Selects between fetching data or writing to the database. `reader` executes the command (e.g. SELECT) and returns rows of data. `nonQuery` executes the command (e.g. UPDATE, INSERT, or DELETE) and does not return data.  `scalar` returns first value of first row of query results.  For Querys using RETURN @values please use `returnValue` Parameters.
+                        type: string
+                        enum:
+                        - reader
+                        - nonQuery
+                        - scalar
+                        default: reader
+                      type:
+                        description: Indicates how the text property is to be interpreted. `text` executes the SQL contained within the text property. `storedProcedure` calls the stored procedure named in the text property. `storedProcedure` is currently experimental.
+                        type: string
+                        enum:
+                        - text
+                        - storedProcedure
+                        default: text
+                      parameters:
+                        type: array
+                        description: Parameters are used to supply data to, or read outputs from, a stored procedure.
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: '@siteid'
+                              description: The name of the parameter.
+                            direction:
+                              description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                              type: string
+                              enum:
+                              - output
+                              - input
+                              - inputOutput
+                              - returnValue
+                            type:
+                              description: Specifies SQL Server-specific data type of a field, property.
+                              type: string
+                              enum:
+                              - BigInt
+                              - Binary
+                              - Bit
+                              - Char
+                              - String
+                              - Date
+                              - DateTime
+                              - DateTime2
+                              - DateTimeOffset
+                              - Decimal
+                              - Float
+                              - Image
+                              - Int
+                              - Money
+                              - NChar
+                              - NText
+                              - NVarChar
+                              - Real
+                              - SmallDateTime
+                              - SmallInt
+                              - SmallMoney
+                              - Structured
+                              - Text
+                              - Time
+                              - Timestamp
+                              - TinyInt
+                              - Udt
+                              - UniqueIdentifier
+                              - VarBinary
+                              - VarChar
+                              - Variant
+                              - Xml
+                            value:
+                              description: Gets or sets the value of the parameter.
+                              type:
+                              - string
+                              - 'null'
+                              format: base64 (output)
+                              example: '66'
+                            size:
+                              description: The maximum size, in bytes, of the data within the column.
+                              type: integer
+                              example: 43
+                    required:
+                    - text
+                  catalogue:
+                    type: string
+                    example: Patients
+                    description: Indicates which database to run against. If no catalogue is specified a default catalogue will be chosen instead. Supported for all PMS with multiple databases. Database catalogues, including the default catalogue, can be identified from the catalogue.name property returned by the Site API endpoints, and are consistent across all sites of a single PMS type.
+                required:
+                - command
+      security:
+      - AuthorizationHeader: []
+        DeviceIdHeader: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /desktop/sites/{siteId}/queries/async:
+    post:
+      tags:
+      - SQL Passthrough
+      summary: Submit async query
+      description: Queue an async query for execution at the specified site.
+      operationId: createAsyncQuery
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Async query created.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - requestSize
+                    - createdAt
+                    - updatedAt
+                    discriminator:
+                      propertyName: status
+                      mapping:
+                        successful: '#/components/schemas/AsyncQuerySuccessful'
+                        initialising: '#/components/schemas/AsyncQueryInitialised'
+                        initialisationFailedCacheError: '#/components/schemas/AsyncQueryInitialisationFailed'
+                        initialisationFailedSiteOffline: '#/components/schemas/AsyncQueryInitialisationFailed'
+                        initialisationFailedSiteUnreachable: '#/components/schemas/AsyncQueryInitialisationFailed'
+                        queued: '#/components/schemas/AsyncQueryQueued'
+                        expiredInQueue: '#/components/schemas/AsyncQueryExpiredInQueue'
+                        executing: '#/components/schemas/AsyncQueryExecuting'
+                        executionFailed: '#/components/schemas/AsyncQueryExecutionFailed'
+                        uploading: '#/components/schemas/AsyncQueryUploading'
+                        uploadFailed: '#/components/schemas/AsyncQueryUploadFailed'
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - async
+                      status:
+                        description: Status `initialisationFailedSiteOffline` means query failed as the site closed session. `initialisationFailedSiteUnreachable` means site hasn't contacted two minutes.
+                        type: string
+                        enum:
+                        - initialising
+                        - initialisationFailedCacheError
+                        - initialisationFailedSiteOffline
+                        - initialisationFailedSiteUnreachable
+                        - queued
+                        - expiredInQueue
+                        - executing
+                        - executionFailed
+                        - uploading
+                        - uploadFailed
+                        - successful
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 900000
+                        minimum: 0
+                        maximum: 7200000
+                        default: 3600000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      statusTiming:
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                    required:
+                    - statusTiming
+                    example:
+                      statusTiming:
+                        initialising:
+                          startTime: '2019-08-24T14:15:22.847Z'
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    initialising: '#/components/schemas/AsyncQueryInitialised'
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+        '503':
+          description: The server is not ready to handle the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 503
+                  statusText: Service Unavailable
+                  message: Site could not be contacted, please try again later or contact a system administrator.
+        '504':
+          description: Server request to upstream resource timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 504
+                  statusText: Gateway Timeout
+                  message: Query took more than 30 seconds to return a result.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                properties:
+                  maxTimeInQueue:
+                    type: integer
+                    format: milli-seconds
+                    example: 900000
+                    minimum: 0
+                    maximum: 7200000
+                    default: 3600000
+                  command:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                        example: GetPatientID
+                        description: The SQL statement to execute or the name of the stored procedure to run.
+                      executionMode:
+                        description: Selects between fetching data or writing to the database. `reader` executes the command (e.g. SELECT) and returns rows of data. `nonQuery` executes the command (e.g. UPDATE, INSERT, or DELETE) and does not return data.  `scalar` returns first value of first row of query results.  For Querys using RETURN @values please use `returnValue` Parameters.
+                        type: string
+                        enum:
+                        - reader
+                        - nonQuery
+                        - scalar
+                        default: reader
+                      type:
+                        description: Indicates how the text property is to be interpreted. `text` executes the SQL contained within the text property. `storedProcedure` calls the stored procedure named in the text property. `storedProcedure` is currently experimental.
+                        type: string
+                        enum:
+                        - text
+                        - storedProcedure
+                        default: text
+                      parameters:
+                        type: array
+                        description: Parameters are used to supply data to, or read outputs from, a stored procedure.
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: '@siteid'
+                              description: The name of the parameter.
+                            direction:
+                              description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                              type: string
+                              enum:
+                              - output
+                              - input
+                              - inputOutput
+                              - returnValue
+                            type:
+                              description: Specifies SQL Server-specific data type of a field, property.
+                              type: string
+                              enum:
+                              - BigInt
+                              - Binary
+                              - Bit
+                              - Char
+                              - String
+                              - Date
+                              - DateTime
+                              - DateTime2
+                              - DateTimeOffset
+                              - Decimal
+                              - Float
+                              - Image
+                              - Int
+                              - Money
+                              - NChar
+                              - NText
+                              - NVarChar
+                              - Real
+                              - SmallDateTime
+                              - SmallInt
+                              - SmallMoney
+                              - Structured
+                              - Text
+                              - Time
+                              - Timestamp
+                              - TinyInt
+                              - Udt
+                              - UniqueIdentifier
+                              - VarBinary
+                              - VarChar
+                              - Variant
+                              - Xml
+                            value:
+                              description: Gets or sets the value of the parameter.
+                              type:
+                              - string
+                              - 'null'
+                              format: base64 (output)
+                              example: '66'
+                            size:
+                              description: The maximum size, in bytes, of the data within the column.
+                              type: integer
+                              example: 43
+                    required:
+                    - text
+                  catalogue:
+                    type: string
+                    example: Patients
+                    description: Indicates which database to run against. If no catalogue is specified a default catalogue will be chosen instead. Supported for all PMS with multiple databases. Database catalogues, including the default catalogue, can be identified from the catalogue.name property returned by the Site API endpoints, and are consistent across all sites of a single PMS type.
+                required:
+                - command
+      security:
+      - AuthorizationHeader: []
+        DeviceIdHeader: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /desktop/sites/{siteId}/queries/{queryId}:
+    get:
+      tags:
+      - SQL Passthrough
+      summary: Get query status
+      description: 'Check the status of an immediate or async query.
+
+
+        For completed async queries, the response includes a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.
+
+        '
+      operationId: getQuery
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        description: Id of the query.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Query retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - integratorId
+                - siteId
+                - mode
+                - status
+                - maxTimeInQueue
+                - commandSize
+                - requestSize
+                - createdAt
+                - updatedAt
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    successful: '#/components/schemas/AsyncQuerySuccessful'
+                    initialising: '#/components/schemas/AsyncQueryInitialised'
+                    initialisationFailedCacheError: '#/components/schemas/AsyncQueryInitialisationFailed'
+                    initialisationFailedSiteOffline: '#/components/schemas/AsyncQueryInitialisationFailed'
+                    initialisationFailedSiteUnreachable: '#/components/schemas/AsyncQueryInitialisationFailed'
+                    queued: '#/components/schemas/AsyncQueryQueued'
+                    expiredInQueue: '#/components/schemas/AsyncQueryExpiredInQueue'
+                    executing: '#/components/schemas/AsyncQueryExecuting'
+                    executionFailed: '#/components/schemas/AsyncQueryExecutionFailed'
+                    uploading: '#/components/schemas/AsyncQueryUploading'
+                    uploadFailed: '#/components/schemas/AsyncQueryUploadFailed'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier of the entity.
+                  integratorId:
+                    type: string
+                    format: uuid
+                    description: Id of the Integrator that created the query.
+                  siteId:
+                    type: string
+                    format: uuid
+                    description: Halo GUID of the site.
+                  mode:
+                    type: string
+                    enum:
+                    - async
+                  status:
+                    description: Status `initialisationFailedSiteOffline` means query failed as the site closed session. `initialisationFailedSiteUnreachable` means site hasn't contacted two minutes.
+                    type: string
+                    enum:
+                    - initialising
+                    - initialisationFailedCacheError
+                    - initialisationFailedSiteOffline
+                    - initialisationFailedSiteUnreachable
+                    - queued
+                    - expiredInQueue
+                    - executing
+                    - executionFailed
+                    - uploading
+                    - uploadFailed
+                    - successful
+                  maxTimeInQueue:
+                    type: integer
+                    format: milli-seconds
+                    example: 900000
+                    minimum: 0
+                    maximum: 7200000
+                    default: 3600000
+                  commandSize:
+                    type: integer
+                    example: 98
+                  requestSize:
+                    type: integer
+                    example: 98
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+      security:
+      - AuthorizationHeader: []
+        DeviceIdHeader: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /desktop/sites/{siteId}/queries/{queryId}/results/{pageNumber}:
+    get:
+      tags:
+      - SQL Passthrough
+      summary: Get query result page
+      description: Get a result page from a successful async query.
+      operationId: getResultPage
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        description: Id of the query.
+        required: true
+        schema:
+          type: string
+      - name: pageNumber
+        in: path
+        description: Page number of the results for a query.
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: Query Result Page retrieved.
+          headers:
+            Size:
+              description: Size of the result page data.
+              schema:
+                type: integer
+              example: 100
+            Rows-Count:
+              description: Number of data rows in the result page.
+              schema:
+                type: integer
+              example: 10
+            Rows-Range-Start:
+              description: Starting row number of the query result page.
+              schema:
+                type: integer
+              example: 1
+            Rows-Range-End:
+              description: Ending row number of the query result page.
+              schema:
+                type: integer
+              example: 50
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - title: Query Result
+                  type: object
+                  properties:
+                    data:
+                      type: string
+                      format: base64
+                      description: Result data that is base64 encoded returned from the executed query.
+                      example: e2lk...
+                    parameters:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: '@siteid'
+                            description: The name of the parameter.
+                          direction:
+                            description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                            type: string
+                            enum:
+                            - output
+                            - input
+                            - inputOutput
+                            - returnValue
+                          type:
+                            description: Specifies SQL Server-specific data type of a field, property.
+                            type: string
+                            enum:
+                            - BigInt
+                            - Binary
+                            - Bit
+                            - Char
+                            - String
+                            - Date
+                            - DateTime
+                            - DateTime2
+                            - DateTimeOffset
+                            - Decimal
+                            - Float
+                            - Image
+                            - Int
+                            - Money
+                            - NChar
+                            - NText
+                            - NVarChar
+                            - Real
+                            - SmallDateTime
+                            - SmallInt
+                            - SmallMoney
+                            - Structured
+                            - Text
+                            - Time
+                            - Timestamp
+                            - TinyInt
+                            - Udt
+                            - UniqueIdentifier
+                            - VarBinary
+                            - VarChar
+                            - Variant
+                            - Xml
+                          value:
+                            description: Gets or sets the value of the parameter.
+                            type:
+                            - string
+                            - 'null'
+                            format: base64 (output)
+                            example: '66'
+                          size:
+                            description: The maximum size, in bytes, of the data within the column.
+                            type: integer
+                            example: 43
+                  required:
+                  - data
+                - title: Non Query Result
+                  type: object
+                  properties:
+                    parameters:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: '@siteid'
+                            description: The name of the parameter.
+                          direction:
+                            description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                            type: string
+                            enum:
+                            - output
+                            - input
+                            - inputOutput
+                            - returnValue
+                          type:
+                            description: Specifies SQL Server-specific data type of a field, property.
+                            type: string
+                            enum:
+                            - BigInt
+                            - Binary
+                            - Bit
+                            - Char
+                            - String
+                            - Date
+                            - DateTime
+                            - DateTime2
+                            - DateTimeOffset
+                            - Decimal
+                            - Float
+                            - Image
+                            - Int
+                            - Money
+                            - NChar
+                            - NText
+                            - NVarChar
+                            - Real
+                            - SmallDateTime
+                            - SmallInt
+                            - SmallMoney
+                            - Structured
+                            - Text
+                            - Time
+                            - Timestamp
+                            - TinyInt
+                            - Udt
+                            - UniqueIdentifier
+                            - VarBinary
+                            - VarChar
+                            - Variant
+                            - Xml
+                          value:
+                            description: Gets or sets the value of the parameter.
+                            type:
+                            - string
+                            - 'null'
+                            format: base64 (output)
+                            example: '66'
+                          size:
+                            description: The maximum size, in bytes, of the data within the column.
+                            type: integer
+                            example: 43
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '410':
+          description: Access to resource is no longer available.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 410
+                  statusText: Gone
+                  message: Access to the target resource is permanently no longer available at the origin server.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+      security:
+      - AuthorizationHeader: []
+        DeviceIdHeader: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /integrator/sites/{siteId}/queries/immediate:
+    post:
+      tags:
+      - SQL Passthrough
+      summary: Execute immediate query
+      description: 'Send an immediate query to a site and receive the result in the response.
+
+
+        Query status can also be retrieved using the **GET Query status** endpoint.
+
+        '
+      operationId: createImmediateQuery
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Immediate query executed.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - id
+                  - integratorId
+                  - siteId
+                  - mode
+                  - status
+                  - maxTimeInQueue
+                  - commandSize
+                  - createdAt
+                  - updatedAt
+                  - requestSize
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      description: Unique identifier of the entity.
+                    integratorId:
+                      type: string
+                      format: uuid
+                      description: Id of the Integrator that created the query.
+                    siteId:
+                      type: string
+                      format: uuid
+                      description: Halo GUID of the site.
+                    mode:
+                      type: string
+                      enum:
+                      - immediate
+                    maxTimeInQueue:
+                      type: integer
+                      format: milli-seconds
+                      example: 15000
+                      minimum: 0
+                      maximum: 60000
+                      default: 30000
+                    commandSize:
+                      type: integer
+                      example: 98
+                    requestSize:
+                      type: integer
+                      example: 98
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+                - type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - successful
+                    statusTiming:
+                      allOf:
+                      - type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                          downloading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                        - executing
+                    metrics:
+                      type: object
+                      required:
+                      - sqlExecutionDuration
+                      properties:
+                        sqlExecutionDuration:
+                          type: integer
+                          example: 1000
+                          description: The number of milli-seconds from when Halo Link Service sends a query to the database until it gets a response.
+                    result:
+                      oneOf:
+                      - type: object
+                        required:
+                        - rows
+                        - size
+                        - data
+                        properties:
+                          rows:
+                            type: integer
+                            example: 30
+                          size:
+                            type: integer
+                            example: 25
+                          data:
+                            type: string
+                            format: base64
+                            description: Result data that is base64 encoded returned from the executed query.
+                            example: e2lk...
+                          parameters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                  example: '@siteid'
+                                  description: The name of the parameter.
+                                direction:
+                                  description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                                  type: string
+                                  enum:
+                                  - output
+                                  - input
+                                  - inputOutput
+                                  - returnValue
+                                type:
+                                  description: Specifies SQL Server-specific data type of a field, property.
+                                  type: string
+                                  enum:
+                                  - BigInt
+                                  - Binary
+                                  - Bit
+                                  - Char
+                                  - String
+                                  - Date
+                                  - DateTime
+                                  - DateTime2
+                                  - DateTimeOffset
+                                  - Decimal
+                                  - Float
+                                  - Image
+                                  - Int
+                                  - Money
+                                  - NChar
+                                  - NText
+                                  - NVarChar
+                                  - Real
+                                  - SmallDateTime
+                                  - SmallInt
+                                  - SmallMoney
+                                  - Structured
+                                  - Text
+                                  - Time
+                                  - Timestamp
+                                  - TinyInt
+                                  - Udt
+                                  - UniqueIdentifier
+                                  - VarBinary
+                                  - VarChar
+                                  - Variant
+                                  - Xml
+                                value:
+                                  description: Gets or sets the value of the parameter.
+                                  type:
+                                  - string
+                                  - 'null'
+                                  format: base64 (output)
+                                  example: '66'
+                                size:
+                                  description: The maximum size, in bytes, of the data within the column.
+                                  type: integer
+                                  example: 43
+                      - type: object
+                        required:
+                        - rowsAffected
+                        - size
+                        properties:
+                          rowsAffected:
+                            type: integer
+                            example: 30
+                          size:
+                            type: integer
+                            example: 25
+                          parameters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                  example: '@siteid'
+                                  description: The name of the parameter.
+                                direction:
+                                  description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                                  type: string
+                                  enum:
+                                  - output
+                                  - input
+                                  - inputOutput
+                                  - returnValue
+                                type:
+                                  description: Specifies SQL Server-specific data type of a field, property.
+                                  type: string
+                                  enum:
+                                  - BigInt
+                                  - Binary
+                                  - Bit
+                                  - Char
+                                  - String
+                                  - Date
+                                  - DateTime
+                                  - DateTime2
+                                  - DateTimeOffset
+                                  - Decimal
+                                  - Float
+                                  - Image
+                                  - Int
+                                  - Money
+                                  - NChar
+                                  - NText
+                                  - NVarChar
+                                  - Real
+                                  - SmallDateTime
+                                  - SmallInt
+                                  - SmallMoney
+                                  - Structured
+                                  - Text
+                                  - Time
+                                  - Timestamp
+                                  - TinyInt
+                                  - Udt
+                                  - UniqueIdentifier
+                                  - VarBinary
+                                  - VarChar
+                                  - Variant
+                                  - Xml
+                                value:
+                                  description: Gets or sets the value of the parameter.
+                                  type:
+                                  - string
+                                  - 'null'
+                                  format: base64 (output)
+                                  example: '66'
+                                size:
+                                  description: The maximum size, in bytes, of the data within the column.
+                                  type: integer
+                                  example: 43
+                    resultSize:
+                      type: integer
+                      example: 98
+                    completedAt:
+                      type: string
+                      format: date-time
+                  required:
+                  - statusTiming
+                  - metrics
+                  - result
+                  - completedAt
+        '400':
+          description: Bad Request - Invalid request path, parameter or body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    error:
+                      type: object
+                      properties:
+                        status:
+                          type: integer
+                          format: httpStatus
+                        statusText:
+                          type: string
+                          format: httpStatusPhrase
+                        message:
+                          type: string
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - createdAt
+                    - updatedAt
+                    - requestSize
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - immediate
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 15000
+                        minimum: 0
+                        maximum: 60000
+                        default: 30000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - executionFailed
+                      statusTiming:
+                        example:
+                          statusTiming:
+                            initialising:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                            executing:
+                              startTime: '2019-08-24T14:15:22.847Z'
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                      errorCode:
+                        deprecated: true
+                        type: integer
+                      errorMessage:
+                        deprecated: true
+                        type: string
+                      errorDetails:
+                        type: object
+                        properties:
+                          errorType:
+                            type: string
+                            enum:
+                            - http
+                            - mssql
+                            - fbsql
+                            - haloLink
+                          errorCode:
+                            type: integer
+                          errorMessage:
+                            type: string
+                      completedAt:
+                        type: string
+                        format: date-time
+        '503':
+          description: The server is not ready to handle the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+        '504':
+          description: Server request to upstream resource timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                properties:
+                  maxTimeInQueue:
+                    type: integer
+                    format: milli-seconds
+                    example: 15000
+                    minimum: 0
+                    maximum: 60000
+                    default: 30000
+                  command:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                        example: GetPatientID
+                        description: The SQL statement to execute or the name of the stored procedure to run.
+                      executionMode:
+                        description: Selects between fetching data or writing to the database. `reader` executes the command (e.g. SELECT) and returns rows of data. `nonQuery` executes the command (e.g. UPDATE, INSERT, or DELETE) and does not return data.  `scalar` returns first value of first row of query results.  For Querys using RETURN @values please use `returnValue` Parameters.
+                        type: string
+                        enum:
+                        - reader
+                        - nonQuery
+                        - scalar
+                        default: reader
+                      type:
+                        description: Indicates how the text property is to be interpreted. `text` executes the SQL contained within the text property. `storedProcedure` calls the stored procedure named in the text property. `storedProcedure` is currently experimental.
+                        type: string
+                        enum:
+                        - text
+                        - storedProcedure
+                        default: text
+                      parameters:
+                        type: array
+                        description: Parameters are used to supply data to, or read outputs from, a stored procedure.
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: '@siteid'
+                              description: The name of the parameter.
+                            direction:
+                              description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                              type: string
+                              enum:
+                              - output
+                              - input
+                              - inputOutput
+                              - returnValue
+                            type:
+                              description: Specifies SQL Server-specific data type of a field, property.
+                              type: string
+                              enum:
+                              - BigInt
+                              - Binary
+                              - Bit
+                              - Char
+                              - String
+                              - Date
+                              - DateTime
+                              - DateTime2
+                              - DateTimeOffset
+                              - Decimal
+                              - Float
+                              - Image
+                              - Int
+                              - Money
+                              - NChar
+                              - NText
+                              - NVarChar
+                              - Real
+                              - SmallDateTime
+                              - SmallInt
+                              - SmallMoney
+                              - Structured
+                              - Text
+                              - Time
+                              - Timestamp
+                              - TinyInt
+                              - Udt
+                              - UniqueIdentifier
+                              - VarBinary
+                              - VarChar
+                              - Variant
+                              - Xml
+                            value:
+                              description: Gets or sets the value of the parameter.
+                              type:
+                              - string
+                              - 'null'
+                              format: base64 (output)
+                              example: '66'
+                            size:
+                              description: The maximum size, in bytes, of the data within the column.
+                              type: integer
+                              example: 43
+                    required:
+                    - text
+                  catalogue:
+                    type: string
+                    example: Patients
+                    description: Indicates which database to run against. If no catalogue is specified a default catalogue will be chosen instead. Supported for all PMS with multiple databases. Database catalogues, including the default catalogue, can be identified from the catalogue.name property returned by the Site API endpoints, and are consistent across all sites of a single PMS type.
+                required:
+                - command
+      security:
+      - SubscriptionKey: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /integrator/sites/{siteId}/queries/async:
+    post:
+      tags:
+      - SQL Passthrough
+      summary: Submit async query
+      description: Queue an async query for execution. Use the **GET Query status** endpoint to check progress and retrieve pagination details for results.
+      operationId: createAsyncQuery
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Async query created.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - allOf:
+                  - type: object
+                    required:
+                    - id
+                    - integratorId
+                    - siteId
+                    - mode
+                    - status
+                    - maxTimeInQueue
+                    - commandSize
+                    - requestSize
+                    - createdAt
+                    - updatedAt
+                    discriminator:
+                      propertyName: status
+                      mapping:
+                        successful: '#/components/schemas/AsyncQuerySuccessful'
+                        initialising: '#/components/schemas/AsyncQueryInitialised'
+                        initialisationFailedCacheError: '#/components/schemas/AsyncQueryInitialisationFailed'
+                        initialisationFailedSiteOffline: '#/components/schemas/AsyncQueryInitialisationFailed'
+                        initialisationFailedSiteUnreachable: '#/components/schemas/AsyncQueryInitialisationFailed'
+                        queued: '#/components/schemas/AsyncQueryQueued'
+                        expiredInQueue: '#/components/schemas/AsyncQueryExpiredInQueue'
+                        executing: '#/components/schemas/AsyncQueryExecuting'
+                        executionFailed: '#/components/schemas/AsyncQueryExecutionFailed'
+                        uploading: '#/components/schemas/AsyncQueryUploading'
+                        uploadFailed: '#/components/schemas/AsyncQueryUploadFailed'
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier of the entity.
+                      integratorId:
+                        type: string
+                        format: uuid
+                        description: Id of the Integrator that created the query.
+                      siteId:
+                        type: string
+                        format: uuid
+                        description: Halo GUID of the site.
+                      mode:
+                        type: string
+                        enum:
+                        - async
+                      status:
+                        description: Status `initialisationFailedSiteOffline` means query failed as the site closed session. `initialisationFailedSiteUnreachable` means site hasn't contacted two minutes.
+                        type: string
+                        enum:
+                        - initialising
+                        - initialisationFailedCacheError
+                        - initialisationFailedSiteOffline
+                        - initialisationFailedSiteUnreachable
+                        - queued
+                        - expiredInQueue
+                        - executing
+                        - executionFailed
+                        - uploading
+                        - uploadFailed
+                        - successful
+                      maxTimeInQueue:
+                        type: integer
+                        format: milli-seconds
+                        example: 900000
+                        minimum: 0
+                        maximum: 7200000
+                        default: 3600000
+                      commandSize:
+                        type: integer
+                        example: 98
+                      requestSize:
+                        type: integer
+                        example: 98
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  - type: object
+                    properties:
+                      statusTiming:
+                        type: object
+                        description: The server time (UTC) at which a query entered and exited the various states.
+                        properties:
+                          initialising:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                            required:
+                            - startTime
+                          queued:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          executing:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                          uploading:
+                            properties:
+                              startTime:
+                                type: string
+                                format: date-time
+                              endTime:
+                                type: string
+                                format: date-time
+                        required:
+                        - initialising
+                    required:
+                    - statusTiming
+                    example:
+                      statusTiming:
+                        initialising:
+                          startTime: '2019-08-24T14:15:22.847Z'
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    initialising: '#/components/schemas/AsyncQueryInitialised'
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+        '503':
+          description: The server is not ready to handle the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 503
+                  statusText: Service Unavailable
+                  message: Site could not be contacted, please try again later or contact a system administrator.
+        '504':
+          description: Server request to upstream resource timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 504
+                  statusText: Gateway Timeout
+                  message: Query took more than 30 seconds to return a result.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                properties:
+                  maxTimeInQueue:
+                    type: integer
+                    format: milli-seconds
+                    example: 900000
+                    minimum: 0
+                    maximum: 7200000
+                    default: 3600000
+                  command:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                        example: GetPatientID
+                        description: The SQL statement to execute or the name of the stored procedure to run.
+                      executionMode:
+                        description: Selects between fetching data or writing to the database. `reader` executes the command (e.g. SELECT) and returns rows of data. `nonQuery` executes the command (e.g. UPDATE, INSERT, or DELETE) and does not return data.  `scalar` returns first value of first row of query results.  For Querys using RETURN @values please use `returnValue` Parameters.
+                        type: string
+                        enum:
+                        - reader
+                        - nonQuery
+                        - scalar
+                        default: reader
+                      type:
+                        description: Indicates how the text property is to be interpreted. `text` executes the SQL contained within the text property. `storedProcedure` calls the stored procedure named in the text property. `storedProcedure` is currently experimental.
+                        type: string
+                        enum:
+                        - text
+                        - storedProcedure
+                        default: text
+                      parameters:
+                        type: array
+                        description: Parameters are used to supply data to, or read outputs from, a stored procedure.
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: '@siteid'
+                              description: The name of the parameter.
+                            direction:
+                              description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                              type: string
+                              enum:
+                              - output
+                              - input
+                              - inputOutput
+                              - returnValue
+                            type:
+                              description: Specifies SQL Server-specific data type of a field, property.
+                              type: string
+                              enum:
+                              - BigInt
+                              - Binary
+                              - Bit
+                              - Char
+                              - String
+                              - Date
+                              - DateTime
+                              - DateTime2
+                              - DateTimeOffset
+                              - Decimal
+                              - Float
+                              - Image
+                              - Int
+                              - Money
+                              - NChar
+                              - NText
+                              - NVarChar
+                              - Real
+                              - SmallDateTime
+                              - SmallInt
+                              - SmallMoney
+                              - Structured
+                              - Text
+                              - Time
+                              - Timestamp
+                              - TinyInt
+                              - Udt
+                              - UniqueIdentifier
+                              - VarBinary
+                              - VarChar
+                              - Variant
+                              - Xml
+                            value:
+                              description: Gets or sets the value of the parameter.
+                              type:
+                              - string
+                              - 'null'
+                              format: base64 (output)
+                              example: '66'
+                            size:
+                              description: The maximum size, in bytes, of the data within the column.
+                              type: integer
+                              example: 43
+                    required:
+                    - text
+                  catalogue:
+                    type: string
+                    example: Patients
+                    description: Indicates which database to run against. If no catalogue is specified a default catalogue will be chosen instead. Supported for all PMS with multiple databases. Database catalogues, including the default catalogue, can be identified from the catalogue.name property returned by the Site API endpoints, and are consistent across all sites of a single PMS type.
+                required:
+                - command
+      security:
+      - SubscriptionKey: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /integrator/sites/{siteId}/queries/{queryId}:
+    get:
+      tags:
+      - SQL Passthrough
+      summary: Get query status
+      description: 'Check the status of an immediate or async query.
+
+
+        For async queries, successful responses include a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.
+
+        '
+      operationId: getQuery
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        description: Id of the query.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Query retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - integratorId
+                - siteId
+                - mode
+                - status
+                - maxTimeInQueue
+                - commandSize
+                - requestSize
+                - createdAt
+                - updatedAt
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    successful: '#/components/schemas/AsyncQuerySuccessful'
+                    initialising: '#/components/schemas/AsyncQueryInitialised'
+                    initialisationFailedCacheError: '#/components/schemas/AsyncQueryInitialisationFailed'
+                    initialisationFailedSiteOffline: '#/components/schemas/AsyncQueryInitialisationFailed'
+                    initialisationFailedSiteUnreachable: '#/components/schemas/AsyncQueryInitialisationFailed'
+                    queued: '#/components/schemas/AsyncQueryQueued'
+                    expiredInQueue: '#/components/schemas/AsyncQueryExpiredInQueue'
+                    executing: '#/components/schemas/AsyncQueryExecuting'
+                    executionFailed: '#/components/schemas/AsyncQueryExecutionFailed'
+                    uploading: '#/components/schemas/AsyncQueryUploading'
+                    uploadFailed: '#/components/schemas/AsyncQueryUploadFailed'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier of the entity.
+                  integratorId:
+                    type: string
+                    format: uuid
+                    description: Id of the Integrator that created the query.
+                  siteId:
+                    type: string
+                    format: uuid
+                    description: Halo GUID of the site.
+                  mode:
+                    type: string
+                    enum:
+                    - async
+                  status:
+                    description: Status `initialisationFailedSiteOffline` means query failed as the site closed session. `initialisationFailedSiteUnreachable` means site hasn't contacted two minutes.
+                    type: string
+                    enum:
+                    - initialising
+                    - initialisationFailedCacheError
+                    - initialisationFailedSiteOffline
+                    - initialisationFailedSiteUnreachable
+                    - queued
+                    - expiredInQueue
+                    - executing
+                    - executionFailed
+                    - uploading
+                    - uploadFailed
+                    - successful
+                  maxTimeInQueue:
+                    type: integer
+                    format: milli-seconds
+                    example: 900000
+                    minimum: 0
+                    maximum: 7200000
+                    default: 3600000
+                  commandSize:
+                    type: integer
+                    example: 98
+                  requestSize:
+                    type: integer
+                    example: 98
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+      security:
+      - SubscriptionKey: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /integrator/sites/{siteId}/queries/status:
+    post:
+      tags:
+      - SQL Passthrough
+      summary: Get batch query status
+      description: 'Returns the status of the specified queries for a site. Submit an array of query IDs in the request body to retrieve their current status.
+
+
+        Each result indicates whether the query was found or not found, and includes the full query details when found.
+
+        '
+      operationId: getQueryStatusBatch
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - queryIds
+              properties:
+                queryIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: Array of query IDs to retrieve status for.
+      responses:
+        '200':
+          description: Batch query status retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - results
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - queryId
+                      - status
+                      properties:
+                        queryId:
+                          type: string
+                          format: uuid
+                          description: Unique identifier of the entity.
+                        status:
+                          type: string
+                          enum:
+                          - found
+                          - notFound
+                        query:
+                          type: object
+                          required:
+                          - id
+                          - integratorId
+                          - siteId
+                          - mode
+                          - status
+                          - maxTimeInQueue
+                          - commandSize
+                          - requestSize
+                          - createdAt
+                          - updatedAt
+                          discriminator:
+                            propertyName: status
+                            mapping:
+                              successful: '#/components/schemas/AsyncQuerySuccessful'
+                              initialising: '#/components/schemas/AsyncQueryInitialised'
+                              initialisationFailedCacheError: '#/components/schemas/AsyncQueryInitialisationFailed'
+                              initialisationFailedSiteOffline: '#/components/schemas/AsyncQueryInitialisationFailed'
+                              initialisationFailedSiteUnreachable: '#/components/schemas/AsyncQueryInitialisationFailed'
+                              queued: '#/components/schemas/AsyncQueryQueued'
+                              expiredInQueue: '#/components/schemas/AsyncQueryExpiredInQueue'
+                              executing: '#/components/schemas/AsyncQueryExecuting'
+                              executionFailed: '#/components/schemas/AsyncQueryExecutionFailed'
+                              uploading: '#/components/schemas/AsyncQueryUploading'
+                              uploadFailed: '#/components/schemas/AsyncQueryUploadFailed'
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              description: Unique identifier of the entity.
+                            integratorId:
+                              type: string
+                              format: uuid
+                              description: Id of the Integrator that created the query.
+                            siteId:
+                              type: string
+                              format: uuid
+                              description: Halo GUID of the site.
+                            mode:
+                              type: string
+                              enum:
+                              - async
+                            status:
+                              description: Status `initialisationFailedSiteOffline` means query failed as the site closed session. `initialisationFailedSiteUnreachable` means site hasn't contacted two minutes.
+                              type: string
+                              enum:
+                              - initialising
+                              - initialisationFailedCacheError
+                              - initialisationFailedSiteOffline
+                              - initialisationFailedSiteUnreachable
+                              - queued
+                              - expiredInQueue
+                              - executing
+                              - executionFailed
+                              - uploading
+                              - uploadFailed
+                              - successful
+                            maxTimeInQueue:
+                              type: integer
+                              format: milli-seconds
+                              example: 900000
+                              minimum: 0
+                              maximum: 7200000
+                              default: 3600000
+                            commandSize:
+                              type: integer
+                              example: 98
+                            requestSize:
+                              type: integer
+                              example: 98
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
+              example:
+                results:
+                - queryId: 1366ef6e-d536-457c-8f1b-eaa4352059f9
+                  status: found
+                  query:
+                    id: 1366ef6e-d536-457c-8f1b-eaa4352059f9
+                    siteId: 3f91c577-20a8-467b-8991-b96dfb90e8c6
+                    mode: async
+                    status: successful
+                    result:
+                      rows: 14
+                      size: 15344
+                      pages:
+                      - pageNumber: 1
+                        status: cached
+                        size: 15467
+                        rows:
+                          count: 14
+                          rangeStart: 0
+                          rangeEnd: 13
+                - queryId: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+                  status: notFound
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+      security:
+      - SubscriptionKey: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /integrator/sites/{siteId}/queries/{queryId}/results/{pageNumber}:
+    get:
+      tags:
+      - SQL Passthrough
+      summary: Get query result page
+      description: Get a result page from a successful async query.
+      operationId: getResultPage
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        description: Id of the query.
+        required: true
+        schema:
+          type: string
+      - name: pageNumber
+        in: path
+        description: Page number of the results for a query.
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: Query Result Page retrieved.
+          headers:
+            Size:
+              description: Size of the result page data.
+              schema:
+                type: integer
+              example: 100
+            Rows-Count:
+              description: Number of data rows in the result page.
+              schema:
+                type: integer
+              example: 10
+            Rows-Range-Start:
+              description: Starting row number of the query result page.
+              schema:
+                type: integer
+              example: 1
+            Rows-Range-End:
+              description: Ending row number of the query result page.
+              schema:
+                type: integer
+              example: 50
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - title: Query Result
+                  type: object
+                  properties:
+                    data:
+                      type: string
+                      format: base64
+                      description: Result data that is base64 encoded returned from the executed query.
+                      example: e2lk...
+                    parameters:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: '@siteid'
+                            description: The name of the parameter.
+                          direction:
+                            description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                            type: string
+                            enum:
+                            - output
+                            - input
+                            - inputOutput
+                            - returnValue
+                          type:
+                            description: Specifies SQL Server-specific data type of a field, property.
+                            type: string
+                            enum:
+                            - BigInt
+                            - Binary
+                            - Bit
+                            - Char
+                            - String
+                            - Date
+                            - DateTime
+                            - DateTime2
+                            - DateTimeOffset
+                            - Decimal
+                            - Float
+                            - Image
+                            - Int
+                            - Money
+                            - NChar
+                            - NText
+                            - NVarChar
+                            - Real
+                            - SmallDateTime
+                            - SmallInt
+                            - SmallMoney
+                            - Structured
+                            - Text
+                            - Time
+                            - Timestamp
+                            - TinyInt
+                            - Udt
+                            - UniqueIdentifier
+                            - VarBinary
+                            - VarChar
+                            - Variant
+                            - Xml
+                          value:
+                            description: Gets or sets the value of the parameter.
+                            type:
+                            - string
+                            - 'null'
+                            format: base64 (output)
+                            example: '66'
+                          size:
+                            description: The maximum size, in bytes, of the data within the column.
+                            type: integer
+                            example: 43
+                  required:
+                  - data
+                - title: Non Query Result
+                  type: object
+                  properties:
+                    parameters:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: '@siteid'
+                            description: The name of the parameter.
+                          direction:
+                            description: A value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+                            type: string
+                            enum:
+                            - output
+                            - input
+                            - inputOutput
+                            - returnValue
+                          type:
+                            description: Specifies SQL Server-specific data type of a field, property.
+                            type: string
+                            enum:
+                            - BigInt
+                            - Binary
+                            - Bit
+                            - Char
+                            - String
+                            - Date
+                            - DateTime
+                            - DateTime2
+                            - DateTimeOffset
+                            - Decimal
+                            - Float
+                            - Image
+                            - Int
+                            - Money
+                            - NChar
+                            - NText
+                            - NVarChar
+                            - Real
+                            - SmallDateTime
+                            - SmallInt
+                            - SmallMoney
+                            - Structured
+                            - Text
+                            - Time
+                            - Timestamp
+                            - TinyInt
+                            - Udt
+                            - UniqueIdentifier
+                            - VarBinary
+                            - VarChar
+                            - Variant
+                            - Xml
+                          value:
+                            description: Gets or sets the value of the parameter.
+                            type:
+                            - string
+                            - 'null'
+                            format: base64 (output)
+                            example: '66'
+                          size:
+                            description: The maximum size, in bytes, of the data within the column.
+                            type: integer
+                            example: 43
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '410':
+          description: Access to resource is no longer available.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 410
+                  statusText: Gone
+                  message: Access to the target resource is permanently no longer available at the origin server.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+      security:
+      - SubscriptionKey: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+  /integrator/sites/{siteId}/queries/{queryId}/results/{pageNumber}/stream:
+    get:
+      tags:
+      - SQL Passthrough
+      summary: Stream result page
+      operationId: streamResultPage
+      description: Streams the JSON content of a single page of query results. This is useful for large result sets that are paginated and delivered as streamed responses to reduce memory usage.
+      parameters:
+      - name: siteId
+        in: path
+        description: Halo GUID of the site.
+        required: true
+        schema:
+          type: string
+      - name: queryId
+        in: path
+        description: Id of the query.
+        required: true
+        schema:
+          type: string
+      - name: pageNumber
+        in: path
+        description: Page number of the results for a query.
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: Successfully streamed the query results page.
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Streamed JSON payload representing a single page of query results.
+        '400':
+          description: Invalid request path parameter or body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 400
+                  statusText: Bad Request
+                  message: Malformed SQL
+        '401':
+          description: Unauthorized request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 401
+                  statusText: Unauthorized
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '403':
+          description: Access to resource is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 403
+                  statusText: Forbidden
+                  message: Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 404
+                  statusText: Not Found
+                  message: The server cannot find the requested resource.
+        '410':
+          description: Access to resource is no longer available.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 410
+                  statusText: Gone
+                  message: Access to the target resource is permanently no longer available at the origin server.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        format: httpStatus
+                      statusText:
+                        type: string
+                        format: httpStatusPhrase
+                      message:
+                        type: string
+              example:
+                error:
+                  status: 500
+                  statusText: Internal Server Error
+                  message: Failed to create query container in CosmosDB.
+      security:
+      - SubscriptionKey: []
+    servers:
+    - url: https://api.haloconnect.io
+      description: Production
+    - url: https://api.stage.haloconnect.io
+      description: Stage
+components:
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+      description: The subscription key for the API.
+    AuthorizationHeader:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token for authentication.
+    DeviceIdHeader:
+      type: apiKey
+      name: DeviceId
+      in: header
+      description: Device ID of the device making the request.
+x-refined-from:
+- halo-connect-desktop-openapi.json
+- halo-connect-integrator-openapi.json
