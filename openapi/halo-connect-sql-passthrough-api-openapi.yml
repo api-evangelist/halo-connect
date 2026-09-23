@@ -16,7 +16,7 @@ servers:
   description: Stage
 tags:
 - name: SQL Passthrough
-  description: "Send SQL queries to practices as immediate, async or registered queries.\n\n**Immediate queries** are small, time-sensitive queries that return a result in seconds. Response size is limited to 8MB.\n\n**Async queries** are queued for execution and results can be retrieved later. The workflow is:\n\n  1. **Submit async query** – Creates a query and returns a `queryId` on success.\n  2. **Get query status** – Check query status. When complete, includes pagination details.\n  3. **Get query result page** – Retrieve result pages using the pagination info from the status response.\n\n**Registered Queries** are also supported. See the [Registered Queries](#tag/Registered-Queries) section for more information.\n"
+  description: Send SQL queries to practices as immediate, async or registered queries.
 paths:
   /desktop/sites/{siteId}/queries/immediate:
     post:
@@ -26,9 +26,7 @@ paths:
       description: 'Send an immediate query to a site and receive the result in the response.
 
 
-        Query status can also be retrieved using the **Get query status** endpoint.
-
-        '
+        Query status can also be retrieved using the **Get query status** endpoint.'
       operationId: createImmediateQuery
       parameters:
       - name: siteId
@@ -1611,9 +1609,7 @@ paths:
       description: 'Check the status of an immediate or async query.
 
 
-        For completed async queries, the response includes a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.
-
-        '
+        For completed async queries, the response includes a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.'
       operationId: getQuery
       parameters:
       - name: siteId
@@ -2184,9 +2180,7 @@ paths:
       description: 'Send an immediate query to a site and receive the result in the response.
 
 
-        Query status can also be retrieved using the **GET Query status** endpoint.
-
-        '
+        Query status can also be retrieved using the **GET Query status** endpoint.'
       operationId: createImmediateQuery
       parameters:
       - name: siteId
@@ -3767,9 +3761,7 @@ paths:
       description: 'Check the status of an immediate or async query.
 
 
-        For async queries, successful responses include a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.
-
-        '
+        For async queries, successful responses include a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.'
       operationId: getQuery
       parameters:
       - name: siteId
@@ -3997,9 +3989,7 @@ paths:
       description: 'Returns the status of the specified queries for a site. Submit an array of query IDs in the request body to retrieve their current status.
 
 
-        Each result indicates whether the query was found or not found, and includes the full query details when found.
-
-        '
+        Each result indicates whether the query was found or not found, and includes the full query details when found.'
       operationId: getQueryStatusBatch
       parameters:
       - name: siteId

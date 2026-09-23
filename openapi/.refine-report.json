@@ -1,0 +1,34 @@
+{
+  "provider": "halo-connect",
+  "sources": [
+    "_original/halo-connect-desktop-openapi.json",
+    "_original/halo-connect-integrator-openapi.json"
+  ],
+  "outputs": [
+    "halo-connect-fhir-api-openapi.yml",
+    "halo-connect-registered-queries-api-openapi.yml",
+    "halo-connect-sql-passthrough-api-openapi.yml",
+    "halo-connect-tokens-api-openapi.yml",
+    "halo-connect-sites-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "halo-connect-desktop-openapi.json: upgraded openapi 3.1.1 -> OpenAPI 3.2.0",
+    "halo-connect-desktop-openapi.json: declared missing tag: Registered Queries",
+    "halo-connect-integrator-openapi.json: upgraded openapi 3.1.1 -> OpenAPI 3.2.0",
+    "tag 'FHIR' spans 2 source specs (halo-connect-desktop-openapi.json, halo-connect-integrator-openapi.json): per-path servers applied",
+    "tag 'Registered Queries' spans 2 source specs (halo-connect-desktop-openapi.json, halo-connect-integrator-openapi.json): per-path servers applied",
+    "tag 'SQL Passthrough' spans 2 source specs (halo-connect-desktop-openapi.json, halo-connect-integrator-openapi.json): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "halo-connect-fhir-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "halo-connect-registered-queries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "halo-connect-sites-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "halo-connect-sql-passthrough-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "halo-connect-tokens-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

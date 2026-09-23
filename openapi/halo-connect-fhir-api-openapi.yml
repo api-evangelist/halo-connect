@@ -29,9 +29,7 @@ paths:
         Include the resource name and search parameters in `fhirParameters`. Example: `Patient?given=John`
 
 
-        See the [FHIR docs](https://docs.haloconnect.io/halo-cloud/fhir-api/overview) for supported resources and parameters.
-
-        '
+        See the FHIR docs for supported resources and parameters.'
       operationId: getFhirQuery
       parameters:
       - name: siteId
@@ -261,9 +259,7 @@ paths:
         POST is recommended for sensitive queries containing personally identifiable information (PII), as it avoids URL length limits and keeps parameters out of logs.
 
 
-        See the [FHIR docs](https://docs.haloconnect.io/halo-cloud/fhir-api/overview) for supported resources and parameters. Errors may return as HTTP errors or FHIR [OperationOutcome](https://hl7.org/fhir/R4/operationoutcome.html) resources.
-
-        '
+        See the FHIR docs for supported resources and parameters. Errors may return as HTTP errors or FHIR OperationOutcome resources.'
       operationId: postFhirSearch
       parameters:
       - name: siteId
@@ -491,9 +487,7 @@ paths:
         Include the resource name and search parameters in `fhirParameters`. Example: `Patient?given=John`
 
 
-        See the [FHIR API docs](https://docs.haloconnect.io/halo-cloud/fhir-api/overview) for supported resources and parameters.
-
-        '
+        See the FHIR API docs for supported resources and parameters.'
       operationId: getFhirQuery
       parameters:
       - name: siteId
@@ -722,9 +716,7 @@ paths:
         POST is recommended for sensitive queries containing personally identifiable information (PII), as it avoids URL length limits and keeps parameters out of logs.
 
 
-        See the [FHIR API docs](https://docs.haloconnect.io/halo-cloud/fhir-api/overview) for supported resources and parameters. Errors may return as HTTP errors or FHIR [OperationOutcome](https://hl7.org/fhir/R4/operationoutcome.html) resources.
-
-        '
+        See the FHIR API docs for supported resources and parameters. Errors may return as HTTP errors or FHIR OperationOutcome resources.'
       operationId: postFhirSearch
       parameters:
       - name: siteId
