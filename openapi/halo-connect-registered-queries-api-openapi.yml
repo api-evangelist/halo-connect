@@ -1195,7 +1195,7 @@ paths:
       - Registered Queries
       summary: Create registered query
       description: Create a registered query to be queued for execution.
-      operationId: createRegisteredQuery
+      operationId: postIntegratorSitesBySiteIdQueriesRegistered
       parameters:
       - name: siteId
         in: path
@@ -1456,12 +1456,14 @@ paths:
                       - text
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: createRegisteredQuery
     get:
       tags:
       - Registered Queries
       summary: List registered queries
       description: List all registered queries that are currently active and queued for execution.
-      operationId: getRegisteredQueries
+      operationId: getIntegratorSitesBySiteIdQueriesRegistered
       parameters:
       - name: siteId
         in: path
@@ -1713,6 +1715,8 @@ paths:
                   message: Failed to create query container in CosmosDB.
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getRegisteredQueries
     servers:
     - url: https://api.haloconnect.io
       description: Production
@@ -1724,7 +1728,7 @@ paths:
       - Registered Queries
       summary: Get registered query details
       description: Get the details of a registered query.
-      operationId: getRegisteredQuery
+      operationId: getIntegratorSitesBySiteIdQueriesRegisteredByQueryId
       parameters:
       - name: siteId
         in: path
@@ -1980,12 +1984,14 @@ paths:
                   message: Failed to create query container in CosmosDB.
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getRegisteredQuery
     delete:
       tags:
       - Registered Queries
       summary: Cancel registered query
       description: Cancel a registered query that is currently queued for execution.
-      operationId: cancelRegisteredQuery
+      operationId: deleteIntegratorSitesBySiteIdQueriesRegisteredByQueryId
       parameters:
       - name: siteId
         in: path
@@ -2119,6 +2125,8 @@ paths:
                   message: Failed to create query container in CosmosDB.
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: cancelRegisteredQuery
     servers:
     - url: https://api.haloconnect.io
       description: Production
@@ -2130,7 +2138,7 @@ paths:
       - Registered Queries
       summary: Get registered query results
       description: Get the result of a registered query that has completed execution.
-      operationId: getRegisteredQueryResult
+      operationId: getIntegratorSitesBySiteIdQueriesRegisteredByQueryIdResults
       parameters:
       - name: siteId
         in: path
@@ -2351,6 +2359,8 @@ paths:
                   message: Failed to create query container in CosmosDB.
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getRegisteredQueryResult
     servers:
     - url: https://api.haloconnect.io
       description: Production

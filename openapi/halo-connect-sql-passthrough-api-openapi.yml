@@ -2181,7 +2181,7 @@ paths:
 
 
         Query status can also be retrieved using the **GET Query status** endpoint.'
-      operationId: createImmediateQuery
+      operationId: postIntegratorSitesBySiteIdQueriesImmediate
       parameters:
       - name: siteId
         in: path
@@ -3320,6 +3320,8 @@ paths:
                 - command
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: createImmediateQuery
     servers:
     - url: https://api.haloconnect.io
       description: Production
@@ -3331,7 +3333,7 @@ paths:
       - SQL Passthrough
       summary: Submit async query
       description: Queue an async query for execution. Use the **GET Query status** endpoint to check progress and retrieve pagination details for results.
-      operationId: createAsyncQuery
+      operationId: postIntegratorSitesBySiteIdQueriesAsync
       parameters:
       - name: siteId
         in: path
@@ -3748,6 +3750,8 @@ paths:
                 - command
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: createAsyncQuery
     servers:
     - url: https://api.haloconnect.io
       description: Production
@@ -3762,7 +3766,7 @@ paths:
 
 
         For async queries, successful responses include a `results` object with pagination details for retrieving result pages. Immediate queries do not include pagination since results are returned with the initial request.'
-      operationId: getQuery
+      operationId: getIntegratorSitesBySiteIdQueriesByQueryId
       parameters:
       - name: siteId
         in: path
@@ -3976,6 +3980,8 @@ paths:
                   message: Failed to create query container in CosmosDB.
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getQuery
     servers:
     - url: https://api.haloconnect.io
       description: Production
@@ -4267,7 +4273,7 @@ paths:
       - SQL Passthrough
       summary: Get query result page
       description: Get a result page from a successful async query.
-      operationId: getResultPage
+      operationId: getIntegratorSitesBySiteIdQueriesByQueryIdResultsByPageNumber
       parameters:
       - name: siteId
         in: path
@@ -4597,6 +4603,8 @@ paths:
                   message: Failed to create query container in CosmosDB.
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getResultPage
     servers:
     - url: https://api.haloconnect.io
       description: Production

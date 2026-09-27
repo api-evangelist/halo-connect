@@ -488,7 +488,7 @@ paths:
 
 
         See the FHIR API docs for supported resources and parameters.'
-      operationId: getFhirQuery
+      operationId: getIntegratorSitesBySiteIdFhirR4ByFhirParameters
       parameters:
       - name: siteId
         in: path
@@ -700,6 +700,8 @@ paths:
                           type: string
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: getFhirQuery
     servers:
     - url: https://api.haloconnect.io
       description: Production
@@ -717,7 +719,7 @@ paths:
 
 
         See the FHIR API docs for supported resources and parameters. Errors may return as HTTP errors or FHIR OperationOutcome resources.'
-      operationId: postFhirSearch
+      operationId: postIntegratorSitesBySiteIdFhirR4ByResourceSearch
       parameters:
       - name: siteId
         in: path
@@ -927,6 +929,8 @@ paths:
               _sort: birthdate
       security:
       - SubscriptionKey: []
+      x-operation-id-source: normalized
+      x-operation-id-original: postFhirSearch
     servers:
     - url: https://api.haloconnect.io
       description: Production
