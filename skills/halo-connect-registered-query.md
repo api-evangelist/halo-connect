@@ -2,7 +2,7 @@
 name: Manage registered (recurring) queries
 description: Create a registered query that runs on a recurring basis, list and inspect registered queries, collect their results, and cancel them.
 api: openapi/halo-connect-integrator-openapi.json
-operations: [createRegisteredQuery, getRegisteredQueries, getRegisteredQuery, getRegisteredQueryResult, cancelRegisteredQuery]
+operations: [postIntegratorSitesBySiteIdQueriesRegistered, getIntegratorSitesBySiteIdQueriesRegistered, getIntegratorSitesBySiteIdQueriesRegisteredByQueryId, getIntegratorSitesBySiteIdQueriesRegisteredByQueryIdResults, deleteIntegratorSitesBySiteIdQueriesRegisteredByQueryId]
 ---
 
 # Manage registered (recurring) queries

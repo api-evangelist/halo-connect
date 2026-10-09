@@ -2,7 +2,7 @@
 name: Search primary-care data with the FHIR R4 API
 description: Query a practice's data as FHIR R4 (4.0.1) resources through the Halo Cloud FHIR facade, honoring per-PMS capability.
 api: openapi/halo-connect-integrator-openapi.json
-operations: [getSite, getFhirQuery, postFhirSearch]
+operations: [getSite, getIntegratorSitesBySiteIdFhirR4ByFhirParameters, postIntegratorSitesBySiteIdFhirR4ByResourceSearch]
 ---
 
 # Search primary-care data with the FHIR R4 API

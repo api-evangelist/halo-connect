@@ -2,7 +2,7 @@
 name: Submit an async query and collect results
 description: Submit a large or long-running SQL query asynchronously, poll for completion (or receive a webhook), then page through the results.
 api: openapi/halo-connect-integrator-openapi.json
-operations: [createAsyncQuery, getQuery, getQueryStatusBatch, getResultPage, streamResultPage]
+operations: [postIntegratorSitesBySiteIdQueriesAsync, getIntegratorSitesBySiteIdQueriesByQueryId, getQueryStatusBatch, getIntegratorSitesBySiteIdQueriesByQueryIdResultsByPageNumber, streamResultPage]
 ---
 
 # Submit an async query and collect results

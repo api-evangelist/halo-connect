@@ -2,7 +2,7 @@
 name: Pair a site and run an immediate query
 description: Resolve a practice's Halo GUID, confirm the site is available, then run a synchronous SQL passthrough query and read the result.
 api: openapi/halo-connect-integrator-openapi.json
-operations: [getSites, Integrator_PairSite, getSite, createImmediateQuery, getResultPage]
+operations: [getSites, Integrator_PairSite, getSite, postIntegratorSitesBySiteIdQueriesImmediate, getIntegratorSitesBySiteIdQueriesByQueryIdResultsByPageNumber]
 ---
 
 # Pair a site and run an immediate query
