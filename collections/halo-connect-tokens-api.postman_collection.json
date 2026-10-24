@@ -1,0 +1,471 @@
+{
+  "info": {
+    "_postman_id": "df518136-e87f-4b5f-b2a0-eda6ff42206c",
+    "name": "Halo Cloud API for Desktop Applications Tokens API",
+    "description": "## Introduction\nThis API reference documents the endpoints available for desktop application integration with the Halo Connect Cloud API.\n\nContact Support:\n Email: support@haloconnect.io",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T01:18:23.000Z",
+    "updatedAt": "2026-10-22T01:18:23.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-df518136-e87f-4b5f-b2a0-eda6ff42206c"
+  },
+  "item": [
+    {
+      "name": "integrator",
+      "item": [
+        {
+          "name": "token",
+          "item": [
+            {
+              "name": "Get authorization token",
+              "id": "c870366d-e4ab-4493-8e47-45a56eed742b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "Ocp-Apim-Subscription-Key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{apiKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                      "key": "grant_type",
+                      "value": "urn:halo-connect:oauth:desktop-token"
+                    },
+                    {
+                      "description": "(Required) The unique identifier of the device",
+                      "key": "device_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) The Halo GUID of the site",
+                      "key": "site_id",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/integrator/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integrator",
+                    "token"
+                  ]
+                },
+                "description": "This endpoint enables integrators to obtain an authorization token for a specific desktop application associated with a given Halo GUID.\nThe token is required to authenticate subsequent requests to the SQL Passthrough or FHIR for that desktop application."
+              },
+              "response": [
+                {
+                  "id": "47d43c64-2c76-4dfc-93e6-dcaa3174b0b5",
+                  "name": "Token successfully obtained",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Ocp-Apim-Subscription-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                          "key": "grant_type",
+                          "value": "urn:halo-connect:oauth:desktop-token"
+                        },
+                        {
+                          "description": "(Required) The unique identifier of the device",
+                          "key": "device_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The Halo GUID of the site",
+                          "key": "site_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrator/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrator",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"access_token\": \"<string>\",\n  \"token_type\": \"<string>\",\n  \"expires_in\": \"<integer>\"\n}",
+                  "createdAt": "2026-10-22T01:18:23.000Z",
+                  "updatedAt": "2026-10-22T01:18:23.000Z",
+                  "uid": "35240-47d43c64-2c76-4dfc-93e6-dcaa3174b0b5"
+                },
+                {
+                  "id": "1c87f0a6-6a63-4564-950c-c87cc016f65e",
+                  "name": "Invalid request",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Ocp-Apim-Subscription-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                          "key": "grant_type",
+                          "value": "urn:halo-connect:oauth:desktop-token"
+                        },
+                        {
+                          "description": "(Required) The unique identifier of the device",
+                          "key": "device_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The Halo GUID of the site",
+                          "key": "site_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrator/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrator",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T01:18:23.000Z",
+                  "updatedAt": "2026-10-22T01:18:23.000Z",
+                  "uid": "35240-1c87f0a6-6a63-4564-950c-c87cc016f65e"
+                },
+                {
+                  "id": "f4d5e2a7-fa91-4ad4-b6e0-bb2d4dc7f7d4",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Ocp-Apim-Subscription-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                          "key": "grant_type",
+                          "value": "urn:halo-connect:oauth:desktop-token"
+                        },
+                        {
+                          "description": "(Required) The unique identifier of the device",
+                          "key": "device_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The Halo GUID of the site",
+                          "key": "site_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrator/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrator",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T01:18:23.000Z",
+                  "updatedAt": "2026-10-22T01:18:23.000Z",
+                  "uid": "35240-f4d5e2a7-fa91-4ad4-b6e0-bb2d4dc7f7d4"
+                },
+                {
+                  "id": "496c8841-1a58-4cfb-bfd1-4aad8dd349a9",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Ocp-Apim-Subscription-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                          "key": "grant_type",
+                          "value": "urn:halo-connect:oauth:desktop-token"
+                        },
+                        {
+                          "description": "(Required) The unique identifier of the device",
+                          "key": "device_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The Halo GUID of the site",
+                          "key": "site_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrator/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrator",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T01:18:23.000Z",
+                  "updatedAt": "2026-10-22T01:18:23.000Z",
+                  "uid": "35240-496c8841-1a58-4cfb-bfd1-4aad8dd349a9"
+                },
+                {
+                  "id": "9c3d9cfc-dc54-4ecc-9ee0-d010fd9f9134",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Ocp-Apim-Subscription-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                          "key": "grant_type",
+                          "value": "urn:halo-connect:oauth:desktop-token"
+                        },
+                        {
+                          "description": "(Required) The unique identifier of the device",
+                          "key": "device_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The Halo GUID of the site",
+                          "key": "site_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrator/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrator",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T01:18:23.000Z",
+                  "updatedAt": "2026-10-22T01:18:23.000Z",
+                  "uid": "35240-9c3d9cfc-dc54-4ecc-9ee0-d010fd9f9134"
+                },
+                {
+                  "id": "4cfca5b5-917d-490e-aaec-8c1cdffc17b9",
+                  "name": "Unsupported media type",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Ocp-Apim-Subscription-Key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Must be set to urn:halo-connect:oauth:desktop-token",
+                          "key": "grant_type",
+                          "value": "urn:halo-connect:oauth:desktop-token"
+                        },
+                        {
+                          "description": "(Required) The unique identifier of the device",
+                          "key": "device_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The Halo GUID of the site",
+                          "key": "site_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integrator/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integrator",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Unsupported Media Type",
+                  "code": 415,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T01:18:23.000Z",
+                  "updatedAt": "2026-10-22T01:18:23.000Z",
+                  "uid": "35240-4cfca5b5-917d-490e-aaec-8c1cdffc17b9"
+                }
+              ],
+              "createdAt": "2026-10-22T01:18:23.000Z",
+              "updatedAt": "2026-10-22T01:18:23.000Z",
+              "uid": "35240-c870366d-e4ab-4493-8e47-45a56eed742b"
+            }
+          ],
+          "id": "4aad3210-c1c1-4c3f-8583-b65cc5a5d358",
+          "createdAt": "2026-10-22T01:18:23.000Z",
+          "updatedAt": "2026-10-22T01:18:23.000Z",
+          "uid": "35240-4aad3210-c1c1-4c3f-8583-b65cc5a5d358"
+        }
+      ],
+      "id": "8b41d14b-ab4e-4485-b40d-e8cb8348e6ba",
+      "createdAt": "2026-10-22T01:18:23.000Z",
+      "updatedAt": "2026-10-22T01:18:23.000Z",
+      "uid": "35240-8b41d14b-ab4e-4485-b40d-e8cb8348e6ba"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.haloconnect.io"
+    }
+  ]
+}

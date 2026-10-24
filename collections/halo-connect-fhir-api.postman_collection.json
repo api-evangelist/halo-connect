@@ -1,0 +1,2508 @@
+{
+  "info": {
+    "_postman_id": "2f585559-3c6d-43f3-9735-6a385aec4720",
+    "name": "Halo Connect FHIR API",
+    "description": "Operations tagged FHIR across 2 of this provider's published API definitions: halo-connect-desktop-openapi.json, halo-connect-integrator-openapi.json. Each path carries the servers of the definition it was published in.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T01:17:53.000Z",
+    "updatedAt": "2026-10-22T01:17:53.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2f585559-3c6d-43f3-9735-6a385aec4720"
+  },
+  "item": [
+    {
+      "name": "desktop",
+      "item": [
+        {
+          "name": "sites",
+          "item": [
+            {
+              "name": "{siteId}",
+              "item": [
+                {
+                  "name": "fhir",
+                  "item": [
+                    {
+                      "name": "R4",
+                      "item": [
+                        {
+                          "name": "{fhirParameters}",
+                          "item": [
+                            {
+                              "name": "Search FHIR resources",
+                              "id": "6daf3adb-aeb1-45ce-95d4-eff96840f621",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "bearer",
+                                  "bearer": [
+                                    {
+                                      "key": "token",
+                                      "value": "{{bearerToken}}",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "desktop",
+                                    "sites",
+                                    ":siteId",
+                                    "fhir",
+                                    "R4",
+                                    ":fhirParameters"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "4414bed6-b3eb-477f-a6eb-0a874bb6cb17",
+                                      "key": "siteId",
+                                      "value": "<string>",
+                                      "description": "(Required) Halo GUID of the site."
+                                    },
+                                    {
+                                      "id": "48833b2e-9ce6-4a9c-83fc-d264ed9d7336",
+                                      "key": "fhirParameters",
+                                      "value": "<string>",
+                                      "description": "(Required) Resource names and search parameters per the R4 FHIR specification for using [RESTful APIs](http://hl7.org/fhir/R4/http.html) and [search](http://hl7.org/fhir/R4/search.html)."
+                                    }
+                                  ]
+                                },
+                                "description": "Send a FHIR query to a site and receive the result in the response.\n\nInclude the resource name and search parameters in `fhirParameters`. Example: `Patient?given=John`\n\nSee the FHIR docs for supported resources and parameters."
+                              },
+                              "response": [
+                                {
+                                  "id": "eb8778e9-9f45-4ae9-be97-508bf9229dbe",
+                                  "name": "Query executed.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-eb8778e9-9f45-4ae9-be97-508bf9229dbe"
+                                },
+                                {
+                                  "id": "05a6fc86-1cff-45dd-a2ed-6d24516d7092",
+                                  "name": "Bad Request - Invalid request path, parameter or body.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-05a6fc86-1cff-45dd-a2ed-6d24516d7092"
+                                },
+                                {
+                                  "id": "4f6ed566-9364-4f60-b687-449b07e2340c",
+                                  "name": "Unauthorized request.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-4f6ed566-9364-4f60-b687-449b07e2340c"
+                                },
+                                {
+                                  "id": "0109080a-d5fc-4732-90e9-6e8b33f7e35a",
+                                  "name": "Access to resource is forbidden.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Forbidden",
+                                  "code": 403,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-0109080a-d5fc-4732-90e9-6e8b33f7e35a"
+                                },
+                                {
+                                  "id": "0f50193c-1e06-4c5a-a132-21ee98836613",
+                                  "name": "The server cannot find the requested resource.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-0f50193c-1e06-4c5a-a132-21ee98836613"
+                                },
+                                {
+                                  "id": "953013f7-f6aa-4160-b276-b766bb4adb54",
+                                  "name": "Internal server error.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-953013f7-f6aa-4160-b276-b766bb4adb54"
+                                },
+                                {
+                                  "id": "0696dc09-8d6c-4d83-a3a9-596ef9051c22",
+                                  "name": "The server is not ready to handle the request.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Service Unavailable",
+                                  "code": 503,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-0696dc09-8d6c-4d83-a3a9-596ef9051c22"
+                                },
+                                {
+                                  "id": "360100d3-0116-4b1e-81af-fa4bc03cca51",
+                                  "name": "Server request to upstream resource timed out.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Gateway Timeout",
+                                  "code": 504,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-360100d3-0116-4b1e-81af-fa4bc03cca51"
+                                }
+                              ],
+                              "createdAt": "2026-10-22T01:17:53.000Z",
+                              "updatedAt": "2026-10-22T01:17:53.000Z",
+                              "uid": "35240-6daf3adb-aeb1-45ce-95d4-eff96840f621"
+                            }
+                          ],
+                          "id": "a6c116bc-4cf1-412a-b6ad-1f51ad054e0f",
+                          "createdAt": "2026-10-22T01:17:53.000Z",
+                          "updatedAt": "2026-10-22T01:17:53.000Z",
+                          "uid": "35240-a6c116bc-4cf1-412a-b6ad-1f51ad054e0f"
+                        },
+                        {
+                          "name": "{resource}",
+                          "item": [
+                            {
+                              "name": "_search",
+                              "item": [
+                                {
+                                  "name": "Search FHIR resources (POST)",
+                                  "id": "79634f0d-c113-49db-9b54-543237bcbdc9",
+                                  "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                  },
+                                  "request": {
+                                    "auth": {
+                                      "type": "bearer",
+                                      "bearer": [
+                                        {
+                                          "key": "token",
+                                          "value": "{{bearerToken}}",
+                                          "type": "string"
+                                        }
+                                      ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/x-www-form-urlencoded"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "urlencoded",
+                                      "urlencoded": [
+                                        {
+                                          "key": "laborum_a",
+                                          "value": "false"
+                                        },
+                                        {
+                                          "key": "enim_2",
+                                          "value": "-22168788.88374749"
+                                        }
+                                      ]
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "desktop",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":resource",
+                                        "_search"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "id": "23b5eaaf-d7c2-4e9f-9c76-80932a7319e5",
+                                          "key": "siteId",
+                                          "value": "<string>",
+                                          "description": "(Required) Halo GUID of the site."
+                                        },
+                                        {
+                                          "id": "a03adb9f-01d2-4bc4-b009-564dbe4535d7",
+                                          "key": "resource",
+                                          "value": "<string>",
+                                          "description": "(Required) The name of the FHIR resource to search for."
+                                        }
+                                      ]
+                                    },
+                                    "description": "Send a FHIR search query with parameters in the request body.\n\nPOST is recommended for sensitive queries containing personally identifiable information (PII), as it avoids URL length limits and keeps parameters out of logs.\n\nSee the FHIR docs for supported resources and parameters. Errors may return as HTTP errors or FHIR OperationOutcome resources."
+                                  },
+                                  "response": [
+                                    {
+                                      "id": "619734cd-ea3f-4f7b-855f-984f64f09b63",
+                                      "name": "Query executed.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "OK",
+                                      "code": 200,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-619734cd-ea3f-4f7b-855f-984f64f09b63"
+                                    },
+                                    {
+                                      "id": "a47bde65-8db3-4fab-90e4-3e5ab097bd9e",
+                                      "name": "Bad Request - Invalid request path, parameter or body.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Bad Request",
+                                      "code": 400,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-a47bde65-8db3-4fab-90e4-3e5ab097bd9e"
+                                    },
+                                    {
+                                      "id": "b6d1d779-d184-4e8b-a86d-00b4711b8e96",
+                                      "name": "Unauthorized request.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Unauthorized",
+                                      "code": 401,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-b6d1d779-d184-4e8b-a86d-00b4711b8e96"
+                                    },
+                                    {
+                                      "id": "98303ebc-82fe-47f2-a82e-2164ca5650ec",
+                                      "name": "Access to resource is forbidden.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Forbidden",
+                                      "code": 403,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-98303ebc-82fe-47f2-a82e-2164ca5650ec"
+                                    },
+                                    {
+                                      "id": "79d2d05c-34fe-4439-8bf1-251750c1b4fc",
+                                      "name": "The server cannot find the requested resource.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Not Found",
+                                      "code": 404,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-79d2d05c-34fe-4439-8bf1-251750c1b4fc"
+                                    },
+                                    {
+                                      "id": "6c466b3d-05c7-4ecf-ade5-7c2aadd53da1",
+                                      "name": "Internal server error.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Internal Server Error",
+                                      "code": 500,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-6c466b3d-05c7-4ecf-ade5-7c2aadd53da1"
+                                    },
+                                    {
+                                      "id": "b92be18a-d354-4fcd-932f-45a1f96573c5",
+                                      "name": "The server is not ready to handle the request.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Service Unavailable",
+                                      "code": 503,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-b92be18a-d354-4fcd-932f-45a1f96573c5"
+                                    },
+                                    {
+                                      "id": "f6b96d6d-2e7b-4d32-8d9b-1830a7734d21",
+                                      "name": "Server request to upstream resource timed out.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/desktop/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "desktop",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Gateway Timeout",
+                                      "code": 504,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-f6b96d6d-2e7b-4d32-8d9b-1830a7734d21"
+                                    }
+                                  ],
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-79634f0d-c113-49db-9b54-543237bcbdc9"
+                                }
+                              ],
+                              "id": "fb22176e-59ea-4d5f-84df-e01f00af8281",
+                              "createdAt": "2026-10-22T01:17:53.000Z",
+                              "updatedAt": "2026-10-22T01:17:53.000Z",
+                              "uid": "35240-fb22176e-59ea-4d5f-84df-e01f00af8281"
+                            }
+                          ],
+                          "id": "b294fd79-0fd6-4890-8eb2-3bd98859a9cf",
+                          "createdAt": "2026-10-22T01:17:53.000Z",
+                          "updatedAt": "2026-10-22T01:17:53.000Z",
+                          "uid": "35240-b294fd79-0fd6-4890-8eb2-3bd98859a9cf"
+                        }
+                      ],
+                      "id": "0d1c1a6e-c168-4fb5-90a9-6529fa9c3c01",
+                      "createdAt": "2026-10-22T01:17:53.000Z",
+                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                      "uid": "35240-0d1c1a6e-c168-4fb5-90a9-6529fa9c3c01"
+                    }
+                  ],
+                  "id": "e6f5f951-9eb5-449a-8b9f-cb4d15dea449",
+                  "createdAt": "2026-10-22T01:17:53.000Z",
+                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                  "uid": "35240-e6f5f951-9eb5-449a-8b9f-cb4d15dea449"
+                }
+              ],
+              "id": "60eb35fe-bab5-4ee7-9f9a-c06b508372c9",
+              "createdAt": "2026-10-22T01:17:53.000Z",
+              "updatedAt": "2026-10-22T01:17:53.000Z",
+              "uid": "35240-60eb35fe-bab5-4ee7-9f9a-c06b508372c9"
+            }
+          ],
+          "id": "95b3e305-47e5-4baa-ba14-718d178d26f5",
+          "createdAt": "2026-10-22T01:17:53.000Z",
+          "updatedAt": "2026-10-22T01:17:53.000Z",
+          "uid": "35240-95b3e305-47e5-4baa-ba14-718d178d26f5"
+        }
+      ],
+      "id": "b51a99f6-1c3a-4b27-ab65-68bc4d735850",
+      "createdAt": "2026-10-22T01:17:53.000Z",
+      "updatedAt": "2026-10-22T01:17:53.000Z",
+      "uid": "35240-b51a99f6-1c3a-4b27-ab65-68bc4d735850"
+    },
+    {
+      "name": "integrator",
+      "item": [
+        {
+          "name": "sites",
+          "item": [
+            {
+              "name": "{siteId}",
+              "item": [
+                {
+                  "name": "fhir",
+                  "item": [
+                    {
+                      "name": "R4",
+                      "item": [
+                        {
+                          "name": "{fhirParameters}",
+                          "item": [
+                            {
+                              "name": "Search FHIR resources",
+                              "id": "fb02d15e-284b-46d4-b97f-c511b466ec1c",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "apikey",
+                                  "apikey": [
+                                    {
+                                      "key": "key",
+                                      "value": "Ocp-Apim-Subscription-Key",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "value",
+                                      "value": "{{apiKey}}",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "in",
+                                      "value": "header",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "integrator",
+                                    "sites",
+                                    ":siteId",
+                                    "fhir",
+                                    "R4",
+                                    ":fhirParameters"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "335cf660-d3e2-42d1-813d-1efeb8bc8d4f",
+                                      "key": "siteId",
+                                      "value": "<string>",
+                                      "description": "(Required) Halo GUID of the site."
+                                    },
+                                    {
+                                      "id": "ed9e941b-d177-461b-9b6e-456800c2bfbf",
+                                      "key": "fhirParameters",
+                                      "value": "<string>",
+                                      "description": "(Required) Resource names and search parameters per the R4 FHIR specification for using [RESTful APIs](http://hl7.org/fhir/R4/http.html) and [search](http://hl7.org/fhir/R4/search.html)."
+                                    }
+                                  ]
+                                },
+                                "description": "Send a FHIR query to a site and receive the result in the response.\n\nInclude the resource name and search parameters in `fhirParameters`. Example: `Patient?given=John`\n\nSee the FHIR API docs for supported resources and parameters."
+                              },
+                              "response": [
+                                {
+                                  "id": "d936d823-1bb4-42cf-9bb7-53151a3f388f",
+                                  "name": "Query executed.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-d936d823-1bb4-42cf-9bb7-53151a3f388f"
+                                },
+                                {
+                                  "id": "da297389-bcfe-492b-8d3f-8515543f37f5",
+                                  "name": "Bad Request - Invalid request path, parameter or body.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-da297389-bcfe-492b-8d3f-8515543f37f5"
+                                },
+                                {
+                                  "id": "2f011a39-8388-4f4a-ba6b-da46a2fce092",
+                                  "name": "Unauthorized request.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-2f011a39-8388-4f4a-ba6b-da46a2fce092"
+                                },
+                                {
+                                  "id": "9aa2ddf6-f7cc-4c79-b07c-22c7b27d1610",
+                                  "name": "Access to resource is forbidden.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Forbidden",
+                                  "code": 403,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-9aa2ddf6-f7cc-4c79-b07c-22c7b27d1610"
+                                },
+                                {
+                                  "id": "69df5011-5ff9-4252-a320-b6411f12c873",
+                                  "name": "The server cannot find the requested resource.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-69df5011-5ff9-4252-a320-b6411f12c873"
+                                },
+                                {
+                                  "id": "235f5538-cd19-4dd9-986c-be6a348f6d10",
+                                  "name": "Internal server error.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-235f5538-cd19-4dd9-986c-be6a348f6d10"
+                                },
+                                {
+                                  "id": "33160865-a137-4001-8642-9f66a10569be",
+                                  "name": "The server is not ready to handle the request.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Service Unavailable",
+                                  "code": 503,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-33160865-a137-4001-8642-9f66a10569be"
+                                },
+                                {
+                                  "id": "0d2fd773-913d-403e-8a8c-84cd5e302954",
+                                  "name": "Server request to upstream resource timed out.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: apikey",
+                                        "key": "Ocp-Apim-Subscription-Key",
+                                        "value": "<API Key>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:fhirParameters",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":fhirParameters"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "siteId"
+                                        },
+                                        {
+                                          "key": "fhirParameters"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Gateway Timeout",
+                                  "code": 504,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{}",
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-0d2fd773-913d-403e-8a8c-84cd5e302954"
+                                }
+                              ],
+                              "createdAt": "2026-10-22T01:17:53.000Z",
+                              "updatedAt": "2026-10-22T01:17:53.000Z",
+                              "uid": "35240-fb02d15e-284b-46d4-b97f-c511b466ec1c"
+                            }
+                          ],
+                          "id": "8a7c5b4c-7cba-403c-afcc-802a4cc3c4b8",
+                          "createdAt": "2026-10-22T01:17:53.000Z",
+                          "updatedAt": "2026-10-22T01:17:53.000Z",
+                          "uid": "35240-8a7c5b4c-7cba-403c-afcc-802a4cc3c4b8"
+                        },
+                        {
+                          "name": "{resource}",
+                          "item": [
+                            {
+                              "name": "_search",
+                              "item": [
+                                {
+                                  "name": "Search FHIR resources (POST)",
+                                  "id": "10d26f46-164c-46c3-9838-94f7f0d34ebe",
+                                  "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                  },
+                                  "request": {
+                                    "auth": {
+                                      "type": "apikey",
+                                      "apikey": [
+                                        {
+                                          "key": "key",
+                                          "value": "Ocp-Apim-Subscription-Key",
+                                          "type": "string"
+                                        },
+                                        {
+                                          "key": "value",
+                                          "value": "{{apiKey}}",
+                                          "type": "string"
+                                        },
+                                        {
+                                          "key": "in",
+                                          "value": "header",
+                                          "type": "string"
+                                        }
+                                      ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/x-www-form-urlencoded"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "urlencoded",
+                                      "urlencoded": [
+                                        {
+                                          "key": "laborum_a",
+                                          "value": "false"
+                                        },
+                                        {
+                                          "key": "enim_2",
+                                          "value": "-22168788.88374749"
+                                        }
+                                      ]
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "integrator",
+                                        "sites",
+                                        ":siteId",
+                                        "fhir",
+                                        "R4",
+                                        ":resource",
+                                        "_search"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "id": "f8f7c4c4-680c-4dcb-8a71-6472b70297aa",
+                                          "key": "siteId",
+                                          "value": "<string>",
+                                          "description": "(Required) Halo GUID of the site."
+                                        },
+                                        {
+                                          "id": "7684b7b3-ea37-4bad-b614-c76add1e5c07",
+                                          "key": "resource",
+                                          "value": "<string>",
+                                          "description": "(Required) The name of the FHIR resource to search for."
+                                        }
+                                      ]
+                                    },
+                                    "description": "Send a FHIR search query with parameters in the request body.\n\nPOST is recommended for sensitive queries containing personally identifiable information (PII), as it avoids URL length limits and keeps parameters out of logs.\n\nSee the FHIR API docs for supported resources and parameters. Errors may return as HTTP errors or FHIR OperationOutcome resources."
+                                  },
+                                  "response": [
+                                    {
+                                      "id": "ff87f907-9e58-4aae-9479-378bfe88838e",
+                                      "name": "Query executed.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "OK",
+                                      "code": 200,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-ff87f907-9e58-4aae-9479-378bfe88838e"
+                                    },
+                                    {
+                                      "id": "082a52ca-bcf4-46fc-a313-1edb089b20f7",
+                                      "name": "Bad Request - Invalid request path, parameter or body.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Bad Request",
+                                      "code": 400,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-082a52ca-bcf4-46fc-a313-1edb089b20f7"
+                                    },
+                                    {
+                                      "id": "5734bb0f-e70e-40c5-a180-d1b8a4f5cf98",
+                                      "name": "Unauthorized request.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Unauthorized",
+                                      "code": 401,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-5734bb0f-e70e-40c5-a180-d1b8a4f5cf98"
+                                    },
+                                    {
+                                      "id": "95273f49-59ec-4743-887a-f014816e4876",
+                                      "name": "Access to resource is forbidden.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Forbidden",
+                                      "code": 403,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-95273f49-59ec-4743-887a-f014816e4876"
+                                    },
+                                    {
+                                      "id": "2fac0078-d30b-48ba-b534-35235f781587",
+                                      "name": "The server cannot find the requested resource.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Not Found",
+                                      "code": 404,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-2fac0078-d30b-48ba-b534-35235f781587"
+                                    },
+                                    {
+                                      "id": "b7fab7c5-158c-4d0a-ae84-f3fc1028bb6d",
+                                      "name": "Internal server error.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Internal Server Error",
+                                      "code": 500,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-b7fab7c5-158c-4d0a-ae84-f3fc1028bb6d"
+                                    },
+                                    {
+                                      "id": "a837eee2-7648-4b19-89b6-c29e47ddabf9",
+                                      "name": "The server is not ready to handle the request.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Service Unavailable",
+                                      "code": 503,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-a837eee2-7648-4b19-89b6-c29e47ddabf9"
+                                    },
+                                    {
+                                      "id": "a01c9cc2-59b0-4529-a7b2-3917a2e71451",
+                                      "name": "Server request to upstream resource timed out.",
+                                      "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/x-www-form-urlencoded"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: apikey",
+                                            "key": "Ocp-Apim-Subscription-Key",
+                                            "value": "<API Key>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "urlencoded",
+                                          "urlencoded": [
+                                            {
+                                              "key": "laborum_a",
+                                              "value": "false"
+                                            },
+                                            {
+                                              "key": "enim_2",
+                                              "value": "-22168788.88374749"
+                                            }
+                                          ]
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/integrator/sites/:siteId/fhir/R4/:resource/_search",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "integrator",
+                                            "sites",
+                                            ":siteId",
+                                            "fhir",
+                                            "R4",
+                                            ":resource",
+                                            "_search"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "siteId"
+                                            },
+                                            {
+                                              "key": "resource"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Gateway Timeout",
+                                      "code": 504,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{}",
+                                      "createdAt": "2026-10-22T01:17:53.000Z",
+                                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                                      "uid": "35240-a01c9cc2-59b0-4529-a7b2-3917a2e71451"
+                                    }
+                                  ],
+                                  "createdAt": "2026-10-22T01:17:53.000Z",
+                                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                                  "uid": "35240-10d26f46-164c-46c3-9838-94f7f0d34ebe"
+                                }
+                              ],
+                              "id": "4497cc63-f914-4e14-b260-8c239fd52896",
+                              "createdAt": "2026-10-22T01:17:53.000Z",
+                              "updatedAt": "2026-10-22T01:17:53.000Z",
+                              "uid": "35240-4497cc63-f914-4e14-b260-8c239fd52896"
+                            }
+                          ],
+                          "id": "6670dce4-20b3-49a9-8cac-de0a89d4bc74",
+                          "createdAt": "2026-10-22T01:17:53.000Z",
+                          "updatedAt": "2026-10-22T01:17:53.000Z",
+                          "uid": "35240-6670dce4-20b3-49a9-8cac-de0a89d4bc74"
+                        }
+                      ],
+                      "id": "a5d82b5b-f4c9-4332-8e2f-f2e12f73631d",
+                      "createdAt": "2026-10-22T01:17:53.000Z",
+                      "updatedAt": "2026-10-22T01:17:53.000Z",
+                      "uid": "35240-a5d82b5b-f4c9-4332-8e2f-f2e12f73631d"
+                    }
+                  ],
+                  "id": "927c6145-3274-4ce9-8e81-c195465f22e7",
+                  "createdAt": "2026-10-22T01:17:53.000Z",
+                  "updatedAt": "2026-10-22T01:17:53.000Z",
+                  "uid": "35240-927c6145-3274-4ce9-8e81-c195465f22e7"
+                }
+              ],
+              "id": "cde6e2f7-69b9-480f-9c95-e5a680bd728a",
+              "createdAt": "2026-10-22T01:17:53.000Z",
+              "updatedAt": "2026-10-22T01:17:53.000Z",
+              "uid": "35240-cde6e2f7-69b9-480f-9c95-e5a680bd728a"
+            }
+          ],
+          "id": "97174bbc-a88e-4501-8adb-bd1bf6695cc9",
+          "createdAt": "2026-10-22T01:17:53.000Z",
+          "updatedAt": "2026-10-22T01:17:53.000Z",
+          "uid": "35240-97174bbc-a88e-4501-8adb-bd1bf6695cc9"
+        }
+      ],
+      "id": "58ea6e76-6358-401b-8201-066b16ef13a4",
+      "createdAt": "2026-10-22T01:17:53.000Z",
+      "updatedAt": "2026-10-22T01:17:53.000Z",
+      "uid": "35240-58ea6e76-6358-401b-8201-066b16ef13a4"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.haloconnect.io"
+    }
+  ]
+}
