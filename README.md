@@ -1,4 +1,4 @@
-# Halo Connect (halo-connect)
+# Halo Connect
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,82 +64,141 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Halo Connect is an Australian healthcare interoperability platform, founded in 2021 and headquartered in Brisbane, Queensland, that makes primary-care data integration simple by exposing on-premise practice management system (PMS) databases through a modern cloud API. Its Halo Link agent and Halo Cloud service let approved software integrators query systems such as Best Practice, Zedmed, and Dental4Windows using either SQL passthrough or a standards-based FHIR R4 API built toward the AU Base 4.1.0 implementation guide. Halo Connect built the first FHIR API for the Best Practice Premier medical-practice industry, runs on Microsoft Azure hosted in Australia, and gates access behind a Halo Cloud subscription.
+Halo Connect is an Australian healthcare interoperability platform, founded in 2021 and headquartered in Brisbane, Queensland, that makes primary-care data integration simple by exposing on-premise practice management system (PMS) databases through a modern cloud API. Its Halo Link agent and Halo Cloud service let approved software integrators query systems such as Best Practice, Zedmed, and Dental4Windows using either SQL passthrough or a standards-based FHIR R4 (4.0.1) API built toward the AU Base 4.1.0 implementation guide, without maintaining a separate database agent per integration. Halo Connect built the first FHIR API for the Best Practice Premier medical-practice industry. The platform runs on Microsoft Azure hosted in Australia, and access is gated behind a Halo Cloud subscription using Azure API Management subscription keys and, for desktop applications, bearer JWT tokens issued from a token endpoint; there is no self-serve public API.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/halo-connect/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/halo-connect/refs/heads/main/apis.yml)
+**Areas:** Healthcare · Australia · FHIR · HL7 · Interoperability · Electronic Health Records · Practice Management · Primary Care · AU Base · Health Data
 
-## Tags
+## Halo Connect on APIs.io
 
-- Healthcare
-- Australia
-- FHIR
-- HL7
-- Interoperability
-- EHR
-- Practice Management
-- Primary Care
-- AU Base
-- Health Data
+Everything profiled for Halo Connect is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/halo-connect/](https://apis.io/providers/halo-connect/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (5)
 
-- **Created:** 2026-07-24
-- **Modified:** 2026-07-24
+- [Halo Connect FHIR API](https://apis.io/apis/halo-connect/halo-connect-fhir-api/) — Query practice data using FHIR resources.
+- [Halo Connect Registered Queries API](https://apis.io/apis/halo-connect/halo-connect-registered-queries-api/) — The Registered Queries API from Halo Connect — 6 operation(s) for registered queries.
+- [Halo Connect Sites API](https://apis.io/apis/halo-connect/halo-connect-sites-api/) — Endpoints for practice onboarding and site metadata.
+- [Halo Connect SQL Passthrough API](https://apis.io/apis/halo-connect/halo-connect-sql-passthrough-api/) — Send SQL queries to practices as immediate, async or registered queries. **Immediate queries** are small, time-sensitive queries that return a result in…
+- [Halo Connect Tokens API](https://apis.io/apis/halo-connect/halo-connect-tokens-api/) — Obtain authorization tokens for desktop applications to authenticate API requests.
 
-## APIs
+### Published properties
 
-### Halo Cloud API for Integrators
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The Halo Cloud API for third-party software integrators to query on-premise PMS databases over the cloud — site pairing, SQL passthrough (immediate and async queries), FHIR R4 resource search, and registered (recurring) queries. Authenticated with an Azure API Management subscription key.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://docs.haloconnect.io/halo-cloud/overview/](https://docs.haloconnect.io/halo-cloud/overview/)
-- **Base URL:** `https://api.haloconnect.io`
+Event-driven and webhook contracts.
 
-#### Properties
+- [Halo Connect Webhooks](https://apis.io/asyncapis/halo-connect/halo-connect-webhooks-asyncapi/)
 
-- [OpenAPI](openapi/halo-connect-integrator-openapi.json) — OpenAPI 3.1.1, 15 paths
-- [Documentation](https://docs.haloconnect.io/halo-cloud/overview/)
-- [API Reference](https://docs.haloconnect.io/api-reference/integrator-openapi.html)
+#### Event channels (1)
 
-### Halo Cloud API for Desktop Applications
+Individual events and webhooks the provider emits.
 
-The Halo Cloud API for desktop applications — a token endpoint plus SQL passthrough, FHIR R4 resource search, and registered-query operations under `/desktop`. Authenticated with a subscription key, a bearer JWT, and a device identifier header.
+- [/](https://apis.io/channels/halo-connect/querycompleted/)
 
-- **Human URL:** [https://docs.haloconnect.io/halo-cloud/overview/](https://docs.haloconnect.io/halo-cloud/overview/)
-- **Base URL:** `https://api.haloconnect.io`
+#### MCP servers (1)
 
-#### Properties
+Model Context Protocol servers that expose the API to agents.
 
-- [OpenAPI](openapi/halo-connect-desktop-openapi.json) — OpenAPI 3.1.1, 10 paths
-- [Documentation](https://docs.haloconnect.io/halo-cloud/overview/)
-- [API Reference](https://docs.haloconnect.io/api-reference/desktop-openapi.html)
+- [halo-connect](https://apis.io/servers/halo-connect/halo-connect/)
 
-### Halo Cloud FHIR API
+#### Agentic access (1)
 
-Halo Connect's FHIR API for accessing primary-care data from on-premise PMS, based on FHIR Release 4 (R4) version 4.0.1 and built toward the AU Base 4.1.0 implementation guide. Requests are site-scoped under `https://api.haloconnect.io/integrator/sites/{haloGuid}/fhir/R4/{resourceType}` and support search, read, and the Patient `$summary` operation. A live CapabilityStatement is served at `{baseUrl}/metadata` behind subscription authentication.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://docs.haloconnect.io/halo-cloud/fhir-api/overview/](https://docs.haloconnect.io/halo-cloud/fhir-api/overview/)
-- **Base URL:** `https://api.haloconnect.io`
+- [Halo Connect Agentic Access](https://apis.io/agentic-access/halo-connect/halo-connect-agentic-access/)
 
-#### Properties
+#### Collections (2)
 
-- [OpenAPI](openapi/halo-connect-integrator-openapi.json) — FHIR R4 operations are described in the Integrator spec
-- [Documentation](https://docs.haloconnect.io/halo-cloud/fhir-api/overview/)
-- [Documentation](https://docs.haloconnect.io/halo-cloud/fhir-api/capabilities/)
-- [API Reference](https://docs.haloconnect.io/api-reference/integrator-openapi.html)
+Postman and Open Collection request collections.
 
-## Common Properties
+- [Halo Cloud API for Desktop Applications](https://apis.io/collections/halo-connect/open-halo-connect-desktop/)
+- [Halo Cloud API for Integrators](https://apis.io/collections/halo-connect/open-halo-connect-integrator/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Halo Connect Desktop Overlay](https://apis.io/overlays/halo-connect/halo-connect-desktop-overlay/)
+- [Halo Connect Integrator Overlay](https://apis.io/overlays/halo-connect/halo-connect-integrator-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Halo Connect Authentication](https://apis.io/security/halo-connect/halo-connect-authentication/)
+- [Halo Connect Domain Security](https://apis.io/security/halo-connect/halo-connect-domain-security/)
+- [Halo Connect Trust Center](https://apis.io/security/halo-connect/halo-connect-trust-center/)
+- [Halo Connect Vulnerability Disclosure](https://apis.io/security/halo-connect/halo-connect-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://haloconnect.io/)
-- [Developer Portal](https://docs.haloconnect.io/)
 - [Documentation](https://docs.haloconnect.io/)
-- [API Reference](https://docs.haloconnect.io/api-reference/integrator-openapi.html)
-- [Getting Started](https://docs.haloconnect.io/halo-cloud/getting-started/)
-- [Status Page](https://status.haloconnect.io/)
-- [Trust Center](https://haloconnect.io/trust)
-- [Blog](https://haloconnect.io/blog/all)
+- [Getting started](https://docs.haloconnect.io/halo-cloud/getting-started/)
+- [API reference](https://docs.haloconnect.io/api-reference/integrator-openapi.html)
+- [Support](https://haloconnect.io/contact-us)
+- [Blog](https://haloconnect.io/blog)
+- [Security](https://docs.haloconnect.io/security/)
+- [Compliance](https://haloconnect.io/trust)
+- [Trust centre](https://haloconnect.io/trust)
+- [Terms of service](https://haloconnect.io/terms-and-conditions)
+- [Privacy policy](https://haloconnect.io/privacy-policy)
+- [Status](https://status.haloconnect.io/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 53.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 59.8 |
+| Contract governance | 18.2 |
+| Operational transparency | 50.0 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 36.8 |
+
+**Agent readiness 28.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 32.0** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/halo-connect/](https://apis.io/providers/halo-connect/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Halo Connect: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/halo-connect/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
